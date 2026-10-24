@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Saomi — Liquid Gold Eau de Parfum</title>
+  <meta name="description" content="Saomi is a house of fine fragrance. Discover Liquid Gold, an eau de parfum of amber, saffron and white musk.">
+  <meta name="theme-color" content="#231910">
+  <meta property="og:title" content="Saomi — Liquid Gold Eau de Parfum">
+  <meta property="og:description" content="Amber, saffron and white musk, poured into glass.">
+  <meta property="og:image" content="assets/img/hero-poster.jpg">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+  <script>
+    // Flag JS early so the intro states apply before first paint; failsafe-reveal if main.js never runs.
+    (function (d) {
+      d.className = d.className.replace('no-js', 'js');
+      setTimeout(function () { d.classList.add('is-loaded'); }, 5000);
+    })(document.documentElement);
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap">
+  <link rel="preload" as="image" href="assets/img/hero-poster.jpg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Intro loader -->
+  <div class="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <span class="loader__logo"><span style="--i:0">S</span><span style="--i:1">a</span><span style="--i:2">o</span><span style="--i:3">m</span><span style="--i:4">i</span></span>
+      <span class="loader__line"></span>
+      <span class="loader__tag">Maison de Parfum</span>
+    </div>
+  </div>
+
+  <!-- Announcement bar + header -->
+  <div class="site-top" data-site-top>
+    <div class="announce" aria-label="Store announcements">
+      <p class="announce__msg is-active">Complimentary shipping on orders over $150</p>
+      <p class="announce__msg">Two free samples with every order</p>
+      <p class="announce__msg">Gift wrapping now available on all fragrances</p>
+    </div>
+
+    <header class="header">
+      <div class="header__inner">
+        <button class="icon-btn menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer" data-menu-open>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18M3 16h12"/></svg>
+        </button>
+
+        <nav class="nav" aria-label="Primary">
+          <a href="#top">Home</a>
+          <a href="#bestsellers">Shop</a>
+          <a href="#families">Scent Families</a>
+          <a href="#collection">Collection</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <a class="logo" href="#top" aria-label="Saomi home">Saomi</a>
+
+        <div class="header__actions">
+          <a class="icon-btn" href="#bestsellers" aria-label="Search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+          </a>
+          <a class="icon-btn icon-btn--account" href="#contact" aria-label="Account">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20.5c1.2-3.6 4-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg>
+          </a>
+          <a class="icon-btn bag" href="#bestsellers" aria-label="Shopping bag, 0 items" data-bag>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.5H6.2z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg>
+            <span class="bag__count" data-bag-count>0</span>
+          </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="drawer" id="drawer" data-drawer>
+    <div class="drawer__overlay" data-menu-close></div>
+    <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="drawer__head">
+        <span class="logo logo--dark">Saomi</span>
+        <button class="icon-btn" type="button" aria-label="Close menu" data-menu-close>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <nav class="drawer__nav" aria-label="Mobile">
+        <a href="#top" style="--i:0">Home</a>
+        <a href="#bestsellers" style="--i:1">Shop</a>
+        <a href="#families" style="--i:2">Scent Families</a>
+        <a href="#collection" style="--i:3">Collection</a>
+        <a href="#contact" style="--i:4">Contact</a>
+      </nav>
+      <p class="drawer__foot">Complimentary shipping on orders over $150</p>
+    </div>
+  </div>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="top" aria-label="Liquid Gold">
+      <div class="hero__media" data-hero-media>
+        <div class="hero__zoom">
+          <video class="hero__video is-active is-front" src="assets/video/hero.mp4" poster="assets/img/hero-poster.jpg" autoplay loop muted playsinline preload="auto" data-hero-video></video>
+          <video class="hero__video" data-src="assets/video/hero.mp4" muted playsinline preload="auto" data-hero-video></video>
+        </div>
+        <div class="hero__glow"></div>
+        <div class="hero__shade"></div>
+      </div>
+      <div class="hero__grain" aria-hidden="true"></div>
+
+      <div class="hero__content" data-hero-content>
+        <p class="eyebrow" data-intro style="--d:.25s">Saomi · Eau de Parfum</p>
+        <h1 class="hero__title">
+          <span class="sr-only">Liquid Gold</span>
+          <span class="line" aria-hidden="true"><span class="char" style="--i:0">L</span><span class="char" style="--i:1">i</span><span class="char" style="--i:2">q</span><span class="char" style="--i:3">u</span><span class="char" style="--i:4">i</span><span class="char" style="--i:5">d</span></span>
+          <span class="line line--gold" aria-hidden="true">Gold</span>
+        </h1>
+        <p class="hero__text" data-intro style="--d:1.3s">Amber, saffron and white musk, poured into glass. A signature that lingers long after you leave the room.</p>
+        <div class="hero__cta" data-intro style="--d:1.45s">
+          <a class="btn btn--light" href="#bestsellers">Shop now</a>
+          <a class="link-line" href="#collection">Discover the scent
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-5-5 5 5-5 5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero__footer" data-intro style="--d:1.7s">
+        <a class="scroll-cue" href="#families"><span class="scroll-cue__line"></span>Scroll</a>
+        <p class="hero__meta">N°01 — Liquid Gold · 50 ml</p>
+        <button class="video-toggle" type="button" aria-label="Pause background video" aria-pressed="false" data-video-toggle>
+          <svg class="video-toggle__ring" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="20" pathLength="100" data-video-progress/></svg>
+          <svg class="video-toggle__icon video-toggle__icon--pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 7v10M14.5 7v10"/></svg>
+          <svg class="video-toggle__icon video-toggle__icon--play" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6.8v10.4l8.2-5.2z"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Ticker -->
+    <div class="marquee" aria-label="Why Saomi">
+      <div class="marquee__track">
+        <ul class="marquee__group">
+          <li>Eau de parfum</li><li>Long-lasting sillage</li><li>Free samples with every order</li><li>Complimentary gift wrapping</li><li>Worldwide shipping</li><li>Buy now, pay later</li>
+          <li>Eau de parfum</li><li>Long-lasting sillage</li><li>Free samples with every order</li><li>Complimentary gift wrapping</li><li>Worldwide shipping</li><li>Buy now, pay later</li>
+        </ul>
+        <ul class="marquee__group" aria-hidden="true">
+          <li>Eau de parfum</li><li>Long-lasting sillage</li><li>Free samples with every order</li><li>Complimentary gift wrapping</li><li>Worldwide shipping</li><li>Buy now, pay later</li>
+          <li>Eau de parfum</li><li>Long-lasting sillage</li><li>Free samples with every order</li><li>Complimentary gift wrapping</li><li>Worldwide shipping</li><li>Buy now, pay later</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Shop by scent family -->
+    <section class="section families" id="families" aria-labelledby="families-title">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <p class="kicker">Find your signature</p>
+          <h2 class="section-title" id="families-title">Shop by Scent Family</h2>
+        </header>
+
+        <ul class="families__grid" data-stagger>
+          <li data-reveal>
+            <a class="family-card" href="#bestsellers" data-tilt style="--c1:#f6dcd5;--c2:#a65e5d;--liquid:#efb3a9">
+              <span class="family-card__rays" aria-hidden="true"></span>
+              <span class="family-card__word" aria-hidden="true">Rose</span>
+              <span class="bottle" aria-hidden="true"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Rose Nocturne</small></span></span></span>
+              <div class="family-card__body">
+                <h3 class="family-card__title">Floral</h3>
+                <span class="family-card__notes">Rose de Mai, jasmine &amp; peony</span>
+                <span class="btn btn--chip">Shop now</span>
+              </div>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="family-card" href="#bestsellers" data-tilt style="--c1:#e0aa66;--c2:#43240f;--liquid:#c98a3a">
+              <span class="family-card__rays" aria-hidden="true"></span>
+              <span class="family-card__word" aria-hidden="true">Oud</span>
+              <span class="bottle" aria-hidden="true"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Liquid Gold</small></span></span></span>
+              <div class="family-card__body">
+                <h3 class="family-card__title">Amber &amp; Oud</h3>
+                <span class="family-card__notes">Saffron, amber &amp; agarwood</span>
+                <span class="btn btn--chip">Shop now</span>
+              </div>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="family-card" href="#bestsellers" data-tilt style="--c1:#eef0da;--c2:#7f9470;--liquid:#ece096">
+              <span class="family-card__rays" aria-hidden="true"></span>
+              <span class="family-card__word" aria-hidden="true">Néroli</span>
+              <span class="bottle" aria-hidden="true"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Néroli Lumière</small></span></span></span>
+              <div class="family-card__body">
+                <h3 class="family-card__title">Fresh &amp; Citrus</h3>
+                <span class="family-card__notes">Bergamot, neroli &amp; vetiver</span>
+                <span class="btn btn--chip">Shop now</span>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Signature collection (split) -->
+    <section class="feature" id="collection" aria-labelledby="collection-title">
+      <div class="feature__media" data-reveal="clip">
+        <img src="assets/img/feature.jpg" alt="A woman holds a gold-capped bottle of Saomi Liquid Gold beside her face" width="860" height="1080" loading="lazy" data-parallax="60">
+      </div>
+      <div class="feature__panel">
+        <div class="feature__inner" data-stagger>
+          <p class="feature__label" data-reveal>Maison Saomi</p>
+          <h2 class="feature__title" id="collection-title" data-reveal>The Signature Collection</h2>
+          <p class="feature__text" data-reveal>Every Saomi fragrance begins with one precious ingredient. Liquid Gold opens on a flicker of saffron and bergamot, warms into jasmine and rose, then settles into amber and creamy sandalwood that stays close from morning until night.</p>
+          <dl class="notes" data-reveal>
+            <div><dt>Top</dt><dd>Saffron · Bergamot · Pink pepper</dd></div>
+            <div><dt>Heart</dt><dd>Jasmine sambac · Damask rose</dd></div>
+            <div><dt>Base</dt><dd>Amber · Sandalwood · White musk</dd></div>
+          </dl>
+          <div data-reveal><a class="btn btn--ghost" href="#bestsellers">Explore the collection</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Best sellers -->
+    <section class="section bestsellers" id="bestsellers" aria-labelledby="bestsellers-title">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <p class="kicker">Most loved</p>
+          <h2 class="section-title" id="bestsellers-title">Best Sellers</h2>
+        </header>
+
+        <ul class="products" data-stagger>
+          <li class="product" data-reveal>
+            <div class="product__media" style="--liquid:#d9a85f">
+              <span class="badge">Bestseller</span>
+              <span class="bottle" aria-hidden="true"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Liquid Gold</small></span></span></span>
+            </div>
+            <h3 class="product__name">Liquid Gold</h3>
+            <p class="product__notes">Amber · Saffron · White musk</p>
+            <fieldset class="sizes">
+              <legend class="sr-only">Size for Liquid Gold</legend>
+              <label><input type="radio" name="size-liquid-gold" value="30 ml" data-price="125"><span>30 ml</span></label>
+              <label><input type="radio" name="size-liquid-gold" value="50 ml" data-price="185" checked><span>50 ml</span></label>
+              <label><input type="radio" name="size-liquid-gold" value="100 ml" data-price="265"><span>100 ml</span></label>
+            </fieldset>
+            <p class="price">$185</p>
+            <button class="btn btn--dark btn--block" type="button" data-add="Liquid Gold">Add to bag</button>
+          </li>
+
+          <li class="product" data-reveal>
+            <div class="product__media" style="--liquid:#d88f8a">
+              <span class="badge">New</span>
+              <span class="bottle" aria-hidden="true"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Rose Nocturne</small></span></span></span>
+            </div>
+            <h3 class="product__name">Rose Nocturne</h3>
+            <p class="product__notes">Damask rose · Oud · Raspberry</p>
+            <fieldset class="sizes">
+              <legend class="sr-only">Size for Rose Nocturne</legend>
+              <label><input type="radio" name="size-rose-nocturne" value="30 ml" data-price="115"><span>30 ml</span></label>
+              <label><input type="radio" name="size-rose-nocturne" value="50 ml" data-price="165" checked><span>50 ml</span></label>
+              <label><input type="radio" name="size-rose-nocturne" value="100 ml" data-price="240"><span>100 ml</span></label>
+            </fieldset>
+            <p class="price">$165</p>
+            <button class="btn btn--dark btn--block" type="button" data-add="Rose Nocturne">Add to bag</button>
+          </li>
+
+          <li class="product" data-reveal>
+            <div class="product__media" style="--liquid:#8e5a36">
+              <span class="bottle" aria-hidden="true"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Santal Noir</small></span></span></span>
+            </div>
+            <h3 class="product__name">Santal Noir</h3>
+            <p class="product__notes">Sandalwood · Leather · Vanilla</p>
+            <fieldset class="sizes">
+              <legend class="sr-only">Size for Santal Noir</legend>
+              <label><input type="radio" name="size-santal-noir" value="30 ml" data-price="135"><span>30 ml</span></label>
+              <label><input type="radio" name="size-santal-noir" value="50 ml" data-price="195" checked><span>50 ml</span></label>
+              <label><input type="radio" name="size-santal-noir" value="100 ml" data-price="280"><span>100 ml</span></label>
+            </fieldset>
+            <p class="price">$195</p>
+            <button class="btn btn--dark btn--block" type="button" data-add="Santal Noir">Add to bag</button>
+          </li>
+
+          <li class="product" data-reveal>
+            <div class="product__media" style="--liquid:#e9d98f">
+              <span class="bottle" aria-hidden="true"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Néroli Lumière</small></span></span></span>
+            </div>
+            <h3 class="product__name">Néroli Lumière</h3>
+            <p class="product__notes">Neroli · Bergamot · Vetiver</p>
+            <fieldset class="sizes">
+              <legend class="sr-only">Size for Néroli Lumière</legend>
+              <label><input type="radio" name="size-neroli-lumiere" value="30 ml" data-price="105"><span>30 ml</span></label>
+              <label><input type="radio" name="size-neroli-lumiere" value="50 ml" data-price="150" checked><span>50 ml</span></label>
+              <label><input type="radio" name="size-neroli-lumiere" value="100 ml" data-price="215"><span>100 ml</span></label>
+            </fieldset>
+            <p class="price">$150</p>
+            <button class="btn btn--dark btn--block" type="button" data-add="Néroli Lumière">Add to bag</button>
+          </li>
+        </ul>
+
+        <!-- Perks -->
+        <ul class="perks" data-stagger>
+          <li class="perk" data-reveal>
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 9h16v13H3zM19 13h5.5l4.5 4.5V22h-10"/><circle cx="8.5" cy="23.5" r="2.5"/><circle cx="23.5" cy="23.5" r="2.5"/></svg>
+            <h3>Complimentary Shipping</h3>
+            <p>On every order over $150, delivered in two to four business days.</p>
+          </li>
+          <li class="perk" data-reveal>
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5 26 7v8.5c0 6-4.2 10.6-10 13-5.8-2.4-10-7-10-13V7z"/><path d="m11.5 16 3.2 3.2 6-6.4"/></svg>
+            <h3>Secure Checkout</h3>
+            <p>Encrypted payments with all major cards, Apple Pay and pay-later options.</p>
+          </li>
+          <li class="perk" data-reveal>
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 12h24v5H4zM6 17h20v11H6zM16 12v16"/><path d="M16 12c-1.5-4-6-6-7.5-3.5S12 12 16 12zm0 0c1.5-4 6-6 7.5-3.5S20 12 16 12z"/></svg>
+            <h3>Free Samples</h3>
+            <p>Choose two discovery vials with every order and find your next signature at home.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="section newsletter" aria-labelledby="newsletter-title">
+      <div class="newsletter__inner" data-reveal>
+        <p class="kicker">The Saomi Letter</p>
+        <h2 class="section-title" id="newsletter-title">Subscribe for New Arrivals</h2>
+        <p class="newsletter__text">Be the first to discover new launches, private sales and the stories behind each scent.</p>
+        <form class="newsletter__form" novalidate data-newsletter>
+          <label class="sr-only" for="email">Email address</label>
+          <input id="email" name="email" type="email" placeholder="Your email address" autocomplete="email" required>
+          <button class="btn btn--dark" type="submit">Subscribe</button>
+        </form>
+        <p class="form-msg" role="status" data-form-msg>You can unsubscribe at any time.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a class="footer__logo" href="#top">Saomi</a>
+          <p>A house of fine fragrance, composed to be worn close and remembered long.</p>
+          <div class="socials">
+            <a href="#" aria-label="Saomi on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6"/></svg></a>
+            <a href="#" aria-label="Saomi on TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3.5v11a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3.5c.4 2.6 2.4 4.6 5 4.8"/></svg></a>
+            <a href="#" aria-label="Saomi on Pinterest"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M10.6 20.2 12.4 12m-.5 2.4c2.8.9 5.1-1 5.1-3.8 0-2.6-2.2-4.4-5-4.4-3.1 0-5 2-5 4.4 0 1 .4 1.9 1.1 2.4"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <h3>Shop</h3>
+          <ul><li><a href="#bestsellers">All fragrances</a></li><li><a href="#bestsellers">Best sellers</a></li><li><a href="#families">Discovery set</a></li><li><a href="#bestsellers">Gift cards</a></li></ul>
+        </div>
+        <div>
+          <h3>Help</h3>
+          <ul><li><a href="#contact">Shipping &amp; returns</a></li><li><a href="#contact">FAQs</a></li><li><a href="#contact">Track an order</a></li><li><a href="mailto:hello@saomi.com">hello@saomi.com</a></li></ul>
+        </div>
+        <div>
+          <h3>Maison</h3>
+          <ul><li><a href="#collection">Our story</a></li><li><a href="#collection">Ingredients</a></li><li><a href="#contact">Journal</a></li><li><a href="#contact">Stockists</a></li></ul>
+        </div>
+      </div>
+
+      <p class="footer__mark" aria-hidden="true" data-reveal>Saomi</p>
+
+      <div class="footer__bottom">
+        <p>© 2026 Saomi. All rights reserved.</p>
+        <p><a href="#contact">Privacy</a> · <a href="#contact">Terms</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
