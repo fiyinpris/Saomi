@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Signature Collection — Saomi</title>
+  <meta name="description" content="Discover the Saomi Signature Collection and the notes inside Liquid Gold.">
+  <meta name="theme-color" content="#231910">
+  <meta property="og:title" content="The Signature Collection — Saomi">
+  <meta property="og:description" content="Amber, saffron and white musk, poured into glass.">
+  <meta property="og:image" content="assets/img/hero-poster.jpg">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+  <script>
+    // Flag JS early so the intro states apply before first paint; failsafe-reveal if main.js never runs.
+    (function (d) {
+      d.className = d.className.replace('no-js', 'js');
+      setTimeout(function () { d.classList.add('is-loaded'); }, 5000);
+    })(document.documentElement);
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="has-solid-header">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Announcement bar + header -->
+  <div class="site-top" data-site-top>
+    <div class="announce" aria-label="Store announcements">
+      <p class="announce__msg is-active">Complimentary shipping on orders over $150</p>
+      <p class="announce__msg">Two free samples with every order</p>
+      <p class="announce__msg">Gift wrapping now available on all fragrances</p>
+    </div>
+
+    <header class="header">
+      <div class="header__inner">
+        <button class="icon-btn menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer" data-menu-open>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18M3 16h12"/></svg>
+        </button>
+
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="shop.html">Shop</a>
+          <a href="scent-families.html">Scent Families</a>
+          <a href="collection.html" aria-current="page">Collection</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+
+        <a class="logo" href="index.html" aria-label="Saomi home">Saomi</a>
+
+        <div class="header__actions">
+          <a class="icon-btn" href="shop.html#search" aria-label="Search fragrances">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+          </a>
+          <a class="icon-btn icon-btn--account" href="account.html" aria-label="Sign in or create an account" data-account-link>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20.5c1.2-3.6 4-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg>
+          </a>
+          <a class="icon-btn bag" href="cart.html" aria-label="Shopping bag, 0 items" data-bag>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.5H6.2z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg>
+            <span class="bag__count" data-bag-count>0</span>
+          </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="drawer" id="drawer" data-drawer>
+    <div class="drawer__overlay" data-menu-close></div>
+    <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="drawer__head">
+        <span class="logo logo--dark">Saomi</span>
+        <button class="icon-btn" type="button" aria-label="Close menu" data-menu-close>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <nav class="drawer__nav" aria-label="Mobile">
+        <a href="index.html" style="--i:0">Home</a>
+        <a href="shop.html" style="--i:1">Shop</a>
+        <a href="scent-families.html" style="--i:2">Scent Families</a>
+        <a href="collection.html" aria-current="page" style="--i:3">Collection</a>
+        <a href="contact.html" style="--i:4">Contact</a>
+      </nav>
+      <div class="drawer__links">
+        <a href="account.html" data-account-text>Sign in</a>
+        <a href="cart.html">My bag <span data-bag-total>(0)</span></a>
+      </div>
+      <p class="drawer__foot">Complimentary shipping on orders over $150</p>
+    </div>
+  </div>
+
+  <main id="main">
+    <section class="section spotlight spotlight--page" id="notes" aria-labelledby="notes-title">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <p class="kicker">N°01 · Liquid Gold</p>
+          <h1 class="section-title" id="notes-title">The Signature Collection</h1>
+        </header>
+
+        <figure class="spotlight__stage" data-reveal>
+          <div class="spotlight__media">
+            <img src="assets/img/spotlight.jpg" alt="Close-up of a Saomi Liquid Gold bottle, amber liquid behind glass engraved with the Saomi name" width="1280" height="720" loading="lazy">
+            <span class="hotspot" style="--ix:.40;--iy:.09" aria-hidden="true">1</span>
+            <span class="hotspot" style="--ix:.62;--iy:.30" aria-hidden="true">2</span>
+            <span class="hotspot" style="--ix:.33;--iy:.72" aria-hidden="true">3</span>
+          </div>
+          <ol class="callouts" aria-label="Liquid Gold fragrance notes">
+            <li class="callout callout--left" style="--ix:.40;--iy:.09">
+              <span class="callout__num" aria-hidden="true">1</span>
+              <h3 class="callout__title">Top notes</h3>
+              <p class="callout__notes">Saffron · Bergamot · Pink pepper</p>
+              <p class="callout__text">A bright flicker of spice and citrus opens the scent.</p>
+            </li>
+            <li class="callout callout--right" style="--ix:.62;--iy:.30">
+              <span class="callout__num" aria-hidden="true">2</span>
+              <h3 class="callout__title">Heart notes</h3>
+              <p class="callout__notes">Jasmine sambac · Damask rose</p>
+              <p class="callout__text">Warms into a soft floral heart that blooms on skin.</p>
+            </li>
+            <li class="callout callout--left" style="--ix:.33;--iy:.72">
+              <span class="callout__num" aria-hidden="true">3</span>
+              <h3 class="callout__title">Base notes</h3>
+              <p class="callout__notes">Amber · Sandalwood · White musk</p>
+              <p class="callout__text">Settles close and creamy, from morning until night.</p>
+            </li>
+          </ol>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Signature collection (split) -->
+    <section class="feature" id="story" aria-labelledby="story-title">
+      <div class="feature__media" data-reveal="clip">
+        <img src="assets/img/feature.jpg" alt="A woman holds a gold-capped bottle of Saomi Liquid Gold beside her face" width="860" height="1080" loading="lazy" data-parallax="60">
+      </div>
+      <div class="feature__panel">
+        <div class="feature__inner" data-stagger>
+          <p class="feature__label" data-reveal>Maison Saomi</p>
+          <h2 class="feature__title" id="story-title" data-reveal>Our Story</h2>
+          <p class="feature__text" data-reveal>Every Saomi fragrance begins with one precious ingredient. Liquid Gold opens on a flicker of saffron and bergamot, warms into jasmine and rose, then settles into amber and creamy sandalwood that stays close from morning until night.</p>
+          <dl class="notes" data-reveal>
+            <div><dt>Top</dt><dd>Saffron · Bergamot · Pink pepper</dd></div>
+            <div><dt>Heart</dt><dd>Jasmine sambac · Damask rose</dd></div>
+            <div><dt>Base</dt><dd>Amber · Sandalwood · White musk</dd></div>
+          </dl>
+          <div data-reveal><a class="btn btn--ghost" href="shop.html">Shop the collection</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section voices" id="voices" aria-labelledby="voices-title" data-voices>
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <p class="kicker">The Signature Voice</p>
+          <h2 class="sr-only" id="voices-title">What our clients say</h2>
+        </header>
+
+        <div class="voices__quotes" data-reveal>
+          <figure class="voice is-active" id="voice-1" role="tabpanel" aria-labelledby="voice-tab-1">
+            <blockquote>“Liquid Gold is the first fragrance people stop me to ask about. Warm, soft, and it lasts from my morning coffee until dinner.”</blockquote>
+            <figcaption><span class="avatar" style="--a1:#d9a85f;--a2:#8a5a2b" aria-hidden="true">AO</span>Amara O.</figcaption>
+          </figure>
+          <figure class="voice" id="voice-2" role="tabpanel" aria-labelledby="voice-tab-2">
+            <blockquote>“Rose Nocturne feels like velvet. Deeper and more grown-up than any rose I have tried, and never too sweet.”</blockquote>
+            <figcaption><span class="avatar" style="--a1:#e3a39b;--a2:#9c5552" aria-hidden="true">CD</span>Claire D.</figcaption>
+          </figure>
+          <figure class="voice" id="voice-3" role="tabpanel" aria-labelledby="voice-tab-3">
+            <blockquote>“Santal Noir sits close to the skin all day. Subtle enough for the office, rich enough for the evening.”</blockquote>
+            <figcaption><span class="avatar" style="--a1:#a7774f;--a2:#4f3220" aria-hidden="true">DK</span>Daniel K.</figcaption>
+          </figure>
+          <figure class="voice" id="voice-4" role="tabpanel" aria-labelledby="voice-tab-4">
+            <blockquote>“Néroli Lumière is sunshine in a bottle. The two free samples helped me find my summer signature.”</blockquote>
+            <figcaption><span class="avatar" style="--a1:#d8cf86;--a2:#7f8a5c" aria-hidden="true">SM</span>Sofia M.</figcaption>
+          </figure>
+          <figure class="voice" id="voice-5" role="tabpanel" aria-labelledby="voice-tab-5">
+            <blockquote>“Beautifully wrapped and delivered in two days. The whole experience feels as considered as the scent itself.”</blockquote>
+            <figcaption><span class="avatar" style="--a1:#7fa395;--a2:#1f4a3f" aria-hidden="true">JT</span>James T.</figcaption>
+          </figure>
+        </div>
+
+        <div class="voices__tabs" role="tablist" aria-label="Client reviews" data-reveal>
+          <button class="voice-tab" id="voice-tab-1" type="button" role="tab" aria-selected="true" aria-controls="voice-1">
+            <span class="avatar" style="--a1:#d9a85f;--a2:#8a5a2b" aria-hidden="true">AO</span>
+            <strong>Amara O.</strong><small>Liquid Gold</small>
+          </button>
+          <button class="voice-tab" id="voice-tab-2" type="button" role="tab" aria-selected="false" aria-controls="voice-2" tabindex="-1">
+            <span class="avatar" style="--a1:#e3a39b;--a2:#9c5552" aria-hidden="true">CD</span>
+            <strong>Claire D.</strong><small>Rose Nocturne</small>
+          </button>
+          <button class="voice-tab" id="voice-tab-3" type="button" role="tab" aria-selected="false" aria-controls="voice-3" tabindex="-1">
+            <span class="avatar" style="--a1:#a7774f;--a2:#4f3220" aria-hidden="true">DK</span>
+            <strong>Daniel K.</strong><small>Santal Noir</small>
+          </button>
+          <button class="voice-tab" id="voice-tab-4" type="button" role="tab" aria-selected="false" aria-controls="voice-4" tabindex="-1">
+            <span class="avatar" style="--a1:#d8cf86;--a2:#7f8a5c" aria-hidden="true">SM</span>
+            <strong>Sofia M.</strong><small>Néroli Lumière</small>
+          </button>
+          <button class="voice-tab" id="voice-tab-5" type="button" role="tab" aria-selected="false" aria-controls="voice-5" tabindex="-1">
+            <span class="avatar" style="--a1:#7fa395;--a2:#1f4a3f" aria-hidden="true">JT</span>
+            <strong>James T.</strong><small>Discovery set</small>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" id="site-footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a class="footer__logo" href="index.html">Saomi</a>
+          <p>A house of fine fragrance, composed to be worn close and remembered long.</p>
+          <div class="socials">
+            <a href="#" aria-label="Saomi on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6"/></svg></a>
+            <a href="#" aria-label="Saomi on TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3.5v11a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3.5c.4 2.6 2.4 4.6 5 4.8"/></svg></a>
+            <a href="#" aria-label="Saomi on Pinterest"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M10.6 20.2 12.4 12m-.5 2.4c2.8.9 5.1-1 5.1-3.8 0-2.6-2.2-4.4-5-4.4-3.1 0-5 2-5 4.4 0 1 .4 1.9 1.1 2.4"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <h3>Shop</h3>
+          <ul><li><a href="shop.html">All fragrances</a></li><li><a href="index.html#bestsellers">Best sellers</a></li><li><a href="scent-families.html">Scent families</a></li><li><a href="cart.html">My bag</a></li></ul>
+        </div>
+        <div>
+          <h3>Help</h3>
+          <ul><li><a href="contact.html#shipping">Shipping</a></li><li><a href="contact.html#faq">FAQs</a></li><li><a href="account.html">Track an order</a></li><li><a href="mailto:hello@saomi.com">hello@saomi.com</a></li></ul>
+        </div>
+        <div>
+          <h3>Maison</h3>
+          <ul><li><a href="collection.html#story">Our story</a></li><li><a href="collection.html#notes">Ingredients</a></li><li><a href="account.html">My account</a></li><li><a href="contact.html">Contact</a></li></ul>
+        </div>
+      </div>
+
+      <p class="footer__mark" aria-hidden="true" data-reveal>Saomi</p>
+
+      <div class="footer__bottom">
+        <p>© 2026 Saomi. All rights reserved.</p>
+        <p><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>

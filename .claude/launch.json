@@ -4,7 +4,7 @@
     {
       "name": "saomi",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "5500", "--bind", "127.0.0.1"],
+      "runtimeArgs": ["server.py"],
       "port": 5500
     }
   ]

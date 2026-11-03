@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Shop All Fragrances — Saomi</title>
+  <meta name="description" content="Shop every Saomi eau de parfum by scent family, from Liquid Gold to Rose Nocturne.">
+  <meta name="theme-color" content="#231910">
+  <meta property="og:title" content="Shop All Fragrances — Saomi">
+  <meta property="og:description" content="Amber, saffron and white musk, poured into glass.">
+  <meta property="og:image" content="assets/img/hero-poster.jpg">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+  <script>
+    // Flag JS early so the intro states apply before first paint; failsafe-reveal if main.js never runs.
+    (function (d) {
+      d.className = d.className.replace('no-js', 'js');
+      setTimeout(function () { d.classList.add('is-loaded'); }, 5000);
+    })(document.documentElement);
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="has-solid-header">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Announcement bar + header -->
+  <div class="site-top" data-site-top>
+    <div class="announce" aria-label="Store announcements">
+      <p class="announce__msg is-active">Complimentary shipping on orders over $150</p>
+      <p class="announce__msg">Two free samples with every order</p>
+      <p class="announce__msg">Gift wrapping now available on all fragrances</p>
+    </div>
+
+    <header class="header">
+      <div class="header__inner">
+        <button class="icon-btn menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer" data-menu-open>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18M3 16h12"/></svg>
+        </button>
+
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="shop.html" aria-current="page">Shop</a>
+          <a href="scent-families.html">Scent Families</a>
+          <a href="collection.html">Collection</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+
+        <a class="logo" href="index.html" aria-label="Saomi home">Saomi</a>
+
+        <div class="header__actions">
+          <a class="icon-btn" href="shop.html#search" aria-label="Search fragrances">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+          </a>
+          <a class="icon-btn icon-btn--account" href="account.html" aria-label="Sign in or create an account" data-account-link>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20.5c1.2-3.6 4-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg>
+          </a>
+          <a class="icon-btn bag" href="cart.html" aria-label="Shopping bag, 0 items" data-bag>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.5H6.2z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg>
+            <span class="bag__count" data-bag-count>0</span>
+          </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="drawer" id="drawer" data-drawer>
+    <div class="drawer__overlay" data-menu-close></div>
+    <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="drawer__head">
+        <span class="logo logo--dark">Saomi</span>
+        <button class="icon-btn" type="button" aria-label="Close menu" data-menu-close>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <nav class="drawer__nav" aria-label="Mobile">
+        <a href="index.html" style="--i:0">Home</a>
+        <a href="shop.html" aria-current="page" style="--i:1">Shop</a>
+        <a href="scent-families.html" style="--i:2">Scent Families</a>
+        <a href="collection.html" style="--i:3">Collection</a>
+        <a href="contact.html" style="--i:4">Contact</a>
+      </nav>
+      <div class="drawer__links">
+        <a href="account.html" data-account-text>Sign in</a>
+        <a href="cart.html">My bag <span data-bag-total>(0)</span></a>
+      </div>
+      <p class="drawer__foot">Complimentary shipping on orders over $150</p>
+    </div>
+  </div>
+
+  <main id="main">
+    <section class="section shop" id="shop" aria-labelledby="shop-title">
+      <div class="container shop__layout">
+        <div class="shop__intro" data-reveal>
+          <p class="kicker">Find your signature</p>
+          <h1 class="section-title" id="shop-title">All Fragrances</h1>
+          <label class="shop__search" for="search">
+            <span class="sr-only">Search fragrances</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+            <input id="search" type="search" placeholder="Search by name or note" autocomplete="off" data-shop-search>
+          </label>
+          <div class="shop__filters" role="group" aria-label="Filter by scent family" data-filters>
+            <button class="chip" type="button" aria-pressed="true" data-filter="all"><span class="chip__label">All</span><span class="chip__count" data-count></span></button>
+            <button class="chip" type="button" aria-pressed="false" data-filter="floral"><span class="chip__label">Floral</span><span class="chip__count" data-count></span></button>
+            <button class="chip" type="button" aria-pressed="false" data-filter="amber"><span class="chip__label">Amber &amp; Oud</span><span class="chip__count" data-count></span></button>
+            <button class="chip" type="button" aria-pressed="false" data-filter="woody"><span class="chip__label">Woody</span><span class="chip__count" data-count></span></button>
+            <button class="chip" type="button" aria-pressed="false" data-filter="fresh"><span class="chip__label">Fresh &amp; Citrus</span><span class="chip__count" data-count></span></button>
+          </div>
+          <p class="shop__count" aria-live="polite" data-shop-count>Showing all 6 fragrances</p>
+        </div>
+
+        <div class="carousel" data-carousel>
+          <ul class="products" data-carousel-track data-stagger>
+            <li class="product" data-slug="liquid-gold" data-family="amber" data-reveal>
+              <div class="product__media" style="--liquid:#d9a85f">
+                <span class="badge">Bestseller</span>
+                <button class="product__wish" type="button" aria-pressed="false" aria-label="Save Liquid Gold to your wishlist" data-wish="Liquid Gold"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.3s-7.6-4.6-7.6-10.5A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.6 2.6c0 5.9-7.6 10.5-7.6 10.5z"/></svg></button>
+                <span class="product__stage" aria-hidden="true">
+                  <span class="product__plinth"></span>
+                  <span class="bottle"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Liquid Gold</small></span></span></span>
+                  <span class="product__no">N°01</span>
+                </span>
+                <span class="product__mood" aria-hidden="true"><img src="assets/img/mood-liquid-gold.jpg" alt="" width="576" height="720" loading="lazy"></span>
+                <button class="product__flip" type="button" aria-pressed="false" aria-label="See Liquid Gold worn" data-flip><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 0 1 13.2-4.9M19.5 12a7.5 7.5 0 0 1-13.2 4.9"/><path d="M18 3.5v4h-4M6 20.5v-4h4"/></svg></button>
+              </div>
+              <div class="product__body">
+                <div class="product__head">
+                  <h3 class="product__name">Liquid Gold</h3>
+                  <p class="price">$185</p>
+                </div>
+                <p class="product__notes">Amber · Saffron · White musk</p>
+                <div class="product__buy">
+                  <fieldset class="sizes">
+                    <legend class="sr-only">Size for Liquid Gold</legend>
+                    <label><input type="radio" name="size-liquid-gold" value="30 ml" data-price="125"><span>30 ml</span></label>
+                    <label><input type="radio" name="size-liquid-gold" value="50 ml" data-price="185" checked><span>50 ml</span></label>
+                    <label><input type="radio" name="size-liquid-gold" value="100 ml" data-price="265"><span>100 ml</span></label>
+                  </fieldset>
+                  <button class="product__add" type="button" data-add="Liquid Gold" aria-label="Add Liquid Gold to bag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.5H6.2z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg><span data-add-label>Add</span></button>
+                </div>
+              </div>
+            </li>
+            <li class="product" data-slug="rose-nocturne" data-family="floral" data-reveal>
+              <div class="product__media" style="--liquid:#d88f8a">
+                <span class="badge">New</span>
+                <button class="product__wish" type="button" aria-pressed="false" aria-label="Save Rose Nocturne to your wishlist" data-wish="Rose Nocturne"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.3s-7.6-4.6-7.6-10.5A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.6 2.6c0 5.9-7.6 10.5-7.6 10.5z"/></svg></button>
+                <span class="product__stage" aria-hidden="true">
+                  <span class="product__plinth"></span>
+                  <span class="bottle"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Rose Nocturne</small></span></span></span>
+                  <span class="product__no">N°02</span>
+                </span>
+                <span class="product__mood" aria-hidden="true"><img src="assets/img/mood-rose-nocturne.jpg" alt="" width="720" height="900" loading="lazy"></span>
+                <button class="product__flip" type="button" aria-pressed="false" aria-label="See Rose Nocturne worn" data-flip><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 0 1 13.2-4.9M19.5 12a7.5 7.5 0 0 1-13.2 4.9"/><path d="M18 3.5v4h-4M6 20.5v-4h4"/></svg></button>
+              </div>
+              <div class="product__body">
+                <div class="product__head">
+                  <h3 class="product__name">Rose Nocturne</h3>
+                  <p class="price">$165</p>
+                </div>
+                <p class="product__notes">Damask rose · Oud · Raspberry</p>
+                <div class="product__buy">
+                  <fieldset class="sizes">
+                    <legend class="sr-only">Size for Rose Nocturne</legend>
+                    <label><input type="radio" name="size-rose-nocturne" value="30 ml" data-price="115"><span>30 ml</span></label>
+                    <label><input type="radio" name="size-rose-nocturne" value="50 ml" data-price="165" checked><span>50 ml</span></label>
+                    <label><input type="radio" name="size-rose-nocturne" value="100 ml" data-price="240"><span>100 ml</span></label>
+                  </fieldset>
+                  <button class="product__add" type="button" data-add="Rose Nocturne" aria-label="Add Rose Nocturne to bag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.5H6.2z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg><span data-add-label>Add</span></button>
+                </div>
+              </div>
+            </li>
+            <li class="product" data-slug="santal-noir" data-family="woody" data-reveal>
+              <div class="product__media" style="--liquid:#8e5a36;--engrave:#f6e7cc">
+                <button class="product__wish" type="button" aria-pressed="false" aria-label="Save Santal Noir to your wishlist" data-wish="Santal Noir"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.3s-7.6-4.6-7.6-10.5A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.6 2.6c0 5.9-7.6 10.5-7.6 10.5z"/></svg></button>
+                <span class="product__stage" aria-hidden="true">
+                  <span class="product__plinth"></span>
+                  <span class="bottle"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Santal Noir</small></span></span></span>
+                  <span class="product__no">N°03</span>
+                </span>
+                <span class="product__mood" aria-hidden="true"><img src="assets/img/mood-santal-noir.jpg" alt="" width="576" height="720" loading="lazy"></span>
+                <button class="product__flip" type="button" aria-pressed="false" aria-label="See Santal Noir worn" data-flip><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 0 1 13.2-4.9M19.5 12a7.5 7.5 0 0 1-13.2 4.9"/><path d="M18 3.5v4h-4M6 20.5v-4h4"/></svg></button>
+              </div>
+              <div class="product__body">
+                <div class="product__head">
+                  <h3 class="product__name">Santal Noir</h3>
+                  <p class="price">$195</p>
+                </div>
+                <p class="product__notes">Sandalwood · Leather · Vanilla</p>
+                <div class="product__buy">
+                  <fieldset class="sizes">
+                    <legend class="sr-only">Size for Santal Noir</legend>
+                    <label><input type="radio" name="size-santal-noir" value="30 ml" data-price="135"><span>30 ml</span></label>
+                    <label><input type="radio" name="size-santal-noir" value="50 ml" data-price="195" checked><span>50 ml</span></label>
+                    <label><input type="radio" name="size-santal-noir" value="100 ml" data-price="280"><span>100 ml</span></label>
+                  </fieldset>
+                  <button class="product__add" type="button" data-add="Santal Noir" aria-label="Add Santal Noir to bag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.5H6.2z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg><span data-add-label>Add</span></button>
+                </div>
+              </div>
+            </li>
+            <li class="product" data-slug="neroli-lumiere" data-family="fresh" data-reveal>
+              <div class="product__media" style="--liquid:#e6d27f">
+                <button class="product__wish" type="button" aria-pressed="false" aria-label="Save Néroli Lumière to your wishlist" data-wish="Néroli Lumière"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.3s-7.6-4.6-7.6-10.5A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.6 2.6c0 5.9-7.6 10.5-7.6 10.5z"/></svg></button>
+                <span class="product__stage" aria-hidden="true">
+                  <span class="product__plinth"></span>
+                  <span class="bottle"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Néroli Lumière</small></span></span></span>
+                  <span class="product__no">N°04</span>
+                </span>
+                <span class="product__mood" aria-hidden="true"><img src="assets/img/mood-neroli-lumiere.jpg" alt="" width="576" height="720" loading="lazy"></span>
+                <button class="product__flip" type="button" aria-pressed="false" aria-label="See Néroli Lumière worn" data-flip><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 0 1 13.2-4.9M19.5 12a7.5 7.5 0 0 1-13.2 4.9"/><path d="M18 3.5v4h-4M6 20.5v-4h4"/></svg></button>
+              </div>
+              <div class="product__body">
+                <div class="product__head">
+                  <h3 class="product__name">Néroli Lumière</h3>
+                  <p class="price">$150</p>
+                </div>
+                <p class="product__notes">Neroli · Bergamot · Vetiver</p>
+                <div class="product__buy">
+                  <fieldset class="sizes">
+                    <legend class="sr-only">Size for Néroli Lumière</legend>
+                    <label><input type="radio" name="size-neroli-lumiere" value="30 ml" data-price="105"><span>30 ml</span></label>
+                    <label><input type="radio" name="size-neroli-lumiere" value="50 ml" data-price="150" checked><span>50 ml</span></label>
+                    <label><input type="radio" name="size-neroli-lumiere" value="100 ml" data-price="215"><span>100 ml</span></label>
+                  </fieldset>
+                  <button class="product__add" type="button" data-add="Néroli Lumière" aria-label="Add Néroli Lumière to bag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.5H6.2z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg><span data-add-label>Add</span></button>
+                </div>
+              </div>
+            </li>
+            <li class="product" data-slug="oud-imperial" data-family="amber" data-reveal>
+              <div class="product__media" style="--liquid:#a4592a;--engrave:#f6e3c6">
+                <span class="badge">Limited</span>
+                <button class="product__wish" type="button" aria-pressed="false" aria-label="Save Oud Impérial to your wishlist" data-wish="Oud Impérial"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.3s-7.6-4.6-7.6-10.5A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.6 2.6c0 5.9-7.6 10.5-7.6 10.5z"/></svg></button>
+                <span class="product__stage" aria-hidden="true">
+                  <span class="product__plinth"></span>
+                  <span class="bottle"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Oud Impérial</small></span></span></span>
+                  <span class="product__no">N°05</span>
+                </span>
+                <span class="product__mood" aria-hidden="true"><img src="assets/img/mood-oud-imperial.jpg" alt="" width="576" height="720" loading="lazy"></span>
+                <button class="product__flip" type="button" aria-pressed="false" aria-label="See Oud Impérial worn" data-flip><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 0 1 13.2-4.9M19.5 12a7.5 7.5 0 0 1-13.2 4.9"/><path d="M18 3.5v4h-4M6 20.5v-4h4"/></svg></button>
+              </div>
+              <div class="product__body">
+                <div class="product__head">
+                  <h3 class="product__name">Oud Impérial</h3>
+                  <p class="price">$210</p>
+                </div>
+                <p class="product__notes">Oud · Saffron · Smoked rose</p>
+                <div class="product__buy">
+                  <fieldset class="sizes">
+                    <legend class="sr-only">Size for Oud Impérial</legend>
+                    <label><input type="radio" name="size-oud-imperial" value="30 ml" data-price="145"><span>30 ml</span></label>
+                    <label><input type="radio" name="size-oud-imperial" value="50 ml" data-price="210" checked><span>50 ml</span></label>
+                    <label><input type="radio" name="size-oud-imperial" value="100 ml" data-price="295"><span>100 ml</span></label>
+                  </fieldset>
+                  <button class="product__add" type="button" data-add="Oud Impérial" aria-label="Add Oud Impérial to bag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.5H6.2z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg><span data-add-label>Add</span></button>
+                </div>
+              </div>
+            </li>
+            <li class="product" data-slug="iris-poudre" data-family="floral" data-reveal>
+              <div class="product__media" style="--liquid:#c9b0d4">
+                <button class="product__wish" type="button" aria-pressed="false" aria-label="Save Iris Poudré to your wishlist" data-wish="Iris Poudré"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.3s-7.6-4.6-7.6-10.5A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.6 2.6c0 5.9-7.6 10.5-7.6 10.5z"/></svg></button>
+                <span class="product__stage" aria-hidden="true">
+                  <span class="product__plinth"></span>
+                  <span class="bottle"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Iris Poudré</small></span></span></span>
+                  <span class="product__no">N°06</span>
+                </span>
+                <span class="product__mood" aria-hidden="true"><img src="assets/img/mood-iris-poudre.jpg" alt="" width="576" height="720" loading="lazy"></span>
+                <button class="product__flip" type="button" aria-pressed="false" aria-label="See Iris Poudré worn" data-flip><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 0 1 13.2-4.9M19.5 12a7.5 7.5 0 0 1-13.2 4.9"/><path d="M18 3.5v4h-4M6 20.5v-4h4"/></svg></button>
+              </div>
+              <div class="product__body">
+                <div class="product__head">
+                  <h3 class="product__name">Iris Poudré</h3>
+                  <p class="price">$175</p>
+                </div>
+                <p class="product__notes">Iris · Violet · Cashmere musk</p>
+                <div class="product__buy">
+                  <fieldset class="sizes">
+                    <legend class="sr-only">Size for Iris Poudré</legend>
+                    <label><input type="radio" name="size-iris-poudre" value="30 ml" data-price="120"><span>30 ml</span></label>
+                    <label><input type="radio" name="size-iris-poudre" value="50 ml" data-price="175" checked><span>50 ml</span></label>
+                    <label><input type="radio" name="size-iris-poudre" value="100 ml" data-price="250"><span>100 ml</span></label>
+                  </fieldset>
+                  <button class="product__add" type="button" data-add="Iris Poudré" aria-label="Add Iris Poudré to bag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.5H6.2z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg><span data-add-label>Add</span></button>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <p class="shop__empty" hidden data-shop-empty>No fragrances match that search. <button type="button" data-shop-reset>Show all</button></p>
+
+          <div class="carousel__controls">
+            <div class="carousel__progress" aria-hidden="true"><span data-carousel-bar></span></div>
+            <button class="round-btn" type="button" aria-label="Previous fragrances" data-carousel-prev>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg>
+            </button>
+            <button class="round-btn round-btn--dark" type="button" aria-label="Next fragrances" data-carousel-next>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <!-- Perks -->
+        <ul class="perks" data-stagger>
+          <li class="perk" data-reveal>
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 9h16v13H3zM19 13h5.5l4.5 4.5V22h-10"/><circle cx="8.5" cy="23.5" r="2.5"/><circle cx="23.5" cy="23.5" r="2.5"/></svg>
+            <h3>Complimentary Shipping</h3>
+            <p>On every order over $150, delivered in two to four business days.</p>
+          </li>
+          <li class="perk" data-reveal>
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5 26 7v8.5c0 6-4.2 10.6-10 13-5.8-2.4-10-7-10-13V7z"/><path d="m11.5 16 3.2 3.2 6-6.4"/></svg>
+            <h3>Secure Checkout</h3>
+            <p>Encrypted payments with all major cards, Apple Pay and pay-later options.</p>
+          </li>
+          <li class="perk" data-reveal>
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 12h24v5H4zM6 17h20v11H6zM16 12v16"/><path d="M16 12c-1.5-4-6-6-7.5-3.5S12 12 16 12zm0 0c1.5-4 6-6 7.5-3.5S20 12 16 12z"/></svg>
+            <h3>Free Samples</h3>
+            <p>Choose two discovery vials with every order and find your next signature at home.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" id="site-footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a class="footer__logo" href="index.html">Saomi</a>
+          <p>A house of fine fragrance, composed to be worn close and remembered long.</p>
+          <div class="socials">
+            <a href="#" aria-label="Saomi on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6"/></svg></a>
+            <a href="#" aria-label="Saomi on TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3.5v11a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3.5c.4 2.6 2.4 4.6 5 4.8"/></svg></a>
+            <a href="#" aria-label="Saomi on Pinterest"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M10.6 20.2 12.4 12m-.5 2.4c2.8.9 5.1-1 5.1-3.8 0-2.6-2.2-4.4-5-4.4-3.1 0-5 2-5 4.4 0 1 .4 1.9 1.1 2.4"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <h3>Shop</h3>
+          <ul><li><a href="shop.html">All fragrances</a></li><li><a href="index.html#bestsellers">Best sellers</a></li><li><a href="scent-families.html">Scent families</a></li><li><a href="cart.html">My bag</a></li></ul>
+        </div>
+        <div>
+          <h3>Help</h3>
+          <ul><li><a href="contact.html#shipping">Shipping</a></li><li><a href="contact.html#faq">FAQs</a></li><li><a href="account.html">Track an order</a></li><li><a href="mailto:hello@saomi.com">hello@saomi.com</a></li></ul>
+        </div>
+        <div>
+          <h3>Maison</h3>
+          <ul><li><a href="collection.html#story">Our story</a></li><li><a href="collection.html#notes">Ingredients</a></li><li><a href="account.html">My account</a></li><li><a href="contact.html">Contact</a></li></ul>
+        </div>
+      </div>
+
+      <p class="footer__mark" aria-hidden="true" data-reveal>Saomi</p>
+
+      <div class="footer__bottom">
+        <p>© 2026 Saomi. All rights reserved.</p>
+        <p><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>

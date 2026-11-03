@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Scent Families — Saomi</title>
+  <meta name="description" content="Explore Saomi's scent families: Floral, Amber &amp; Oud, Woody and Fresh &amp; Citrus.">
+  <meta name="theme-color" content="#231910">
+  <meta property="og:title" content="Scent Families — Saomi">
+  <meta property="og:description" content="Amber, saffron and white musk, poured into glass.">
+  <meta property="og:image" content="assets/img/hero-poster.jpg">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+  <script>
+    // Flag JS early so the intro states apply before first paint; failsafe-reveal if main.js never runs.
+    (function (d) {
+      d.className = d.className.replace('no-js', 'js');
+      setTimeout(function () { d.classList.add('is-loaded'); }, 5000);
+    })(document.documentElement);
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="has-solid-header">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Announcement bar + header -->
+  <div class="site-top" data-site-top>
+    <div class="announce" aria-label="Store announcements">
+      <p class="announce__msg is-active">Complimentary shipping on orders over $150</p>
+      <p class="announce__msg">Two free samples with every order</p>
+      <p class="announce__msg">Gift wrapping now available on all fragrances</p>
+    </div>
+
+    <header class="header">
+      <div class="header__inner">
+        <button class="icon-btn menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer" data-menu-open>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18M3 16h12"/></svg>
+        </button>
+
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="shop.html">Shop</a>
+          <a href="scent-families.html" aria-current="page">Scent Families</a>
+          <a href="collection.html">Collection</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+
+        <a class="logo" href="index.html" aria-label="Saomi home">Saomi</a>
+
+        <div class="header__actions">
+          <a class="icon-btn" href="shop.html#search" aria-label="Search fragrances">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+          </a>
+          <a class="icon-btn icon-btn--account" href="account.html" aria-label="Sign in or create an account" data-account-link>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20.5c1.2-3.6 4-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg>
+          </a>
+          <a class="icon-btn bag" href="cart.html" aria-label="Shopping bag, 0 items" data-bag>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.5H6.2z"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5"/></svg>
+            <span class="bag__count" data-bag-count>0</span>
+          </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="drawer" id="drawer" data-drawer>
+    <div class="drawer__overlay" data-menu-close></div>
+    <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="drawer__head">
+        <span class="logo logo--dark">Saomi</span>
+        <button class="icon-btn" type="button" aria-label="Close menu" data-menu-close>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <nav class="drawer__nav" aria-label="Mobile">
+        <a href="index.html" style="--i:0">Home</a>
+        <a href="shop.html" style="--i:1">Shop</a>
+        <a href="scent-families.html" aria-current="page" style="--i:2">Scent Families</a>
+        <a href="collection.html" style="--i:3">Collection</a>
+        <a href="contact.html" style="--i:4">Contact</a>
+      </nav>
+      <div class="drawer__links">
+        <a href="account.html" data-account-text>Sign in</a>
+        <a href="cart.html">My bag <span data-bag-total>(0)</span></a>
+      </div>
+      <p class="drawer__foot">Complimentary shipping on orders over $150</p>
+    </div>
+  </div>
+
+  <main id="main">
+    <section class="section family-page" aria-labelledby="families-title">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <p class="kicker">Find your signature</p>
+          <h1 class="section-title" id="families-title">Scent Families</h1>
+        </header>
+
+        <div class="family-rows">
+          <article class="family-row" id="floral" data-reveal>
+            <a class="family-card" href="shop.html?family=floral" data-tilt style="--c1:#fbefeb;--c2:#e9bfb6;--liquid:#e7a69c" aria-label="Shop the Floral family">
+              <span class="family-card__media">
+                <span class="family-card__word" aria-hidden="true">Rose</span>
+                <span class="bottle" aria-hidden="true"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Rose Nocturne</small></span></span></span>
+              </span>
+            </a>
+            <div class="family-row__body">
+              <p class="family-row__index">Family I</p>
+              <h2 class="family-row__title">Floral</h2>
+              <p class="family-row__notes">Rose de Mai, jasmine &amp; peony</p>
+              <p class="family-row__text">Soft, romantic compositions built around the world's most treasured blooms.</p>
+              <ul class="family-row__list">
+                <li><a href="shop.html?family=floral" style="--liquid:#d88f8a"><span class="family-row__dot" aria-hidden="true"></span>Rose Nocturne<span class="family-row__price">from $115</span></a></li>
+                <li><a href="shop.html?family=floral" style="--liquid:#c9b0d4"><span class="family-row__dot" aria-hidden="true"></span>Iris Poudré<span class="family-row__price">from $120</span></a></li>
+              </ul>
+              <a class="btn btn--dark" href="shop.html?family=floral">Shop Floral</a>
+            </div>
+          </article>
+          <article class="family-row" id="amber" data-reveal>
+            <a class="family-card" href="shop.html?family=amber" data-tilt style="--c1:#f6e6cc;--c2:#d6a868;--liquid:#c98a3a" aria-label="Shop the Amber &amp; Oud family">
+              <span class="family-card__media">
+                <span class="family-card__word" aria-hidden="true">Oud</span>
+                <span class="bottle" aria-hidden="true"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Liquid Gold</small></span></span></span>
+              </span>
+            </a>
+            <div class="family-row__body">
+              <p class="family-row__index">Family II</p>
+              <h2 class="family-row__title">Amber &amp; Oud</h2>
+              <p class="family-row__notes">Saffron, amber &amp; agarwood</p>
+              <p class="family-row__text">Warm and resinous, these scents glow on skin long after dusk.</p>
+              <ul class="family-row__list">
+                <li><a href="shop.html?family=amber" style="--liquid:#d9a85f"><span class="family-row__dot" aria-hidden="true"></span>Liquid Gold<span class="family-row__price">from $125</span></a></li>
+                <li><a href="shop.html?family=amber" style="--liquid:#a4592a"><span class="family-row__dot" aria-hidden="true"></span>Oud Impérial<span class="family-row__price">from $145</span></a></li>
+              </ul>
+              <a class="btn btn--dark" href="shop.html?family=amber">Shop Amber &amp; Oud</a>
+            </div>
+          </article>
+          <article class="family-row" id="woody" data-reveal>
+            <a class="family-card" href="shop.html?family=woody" data-tilt style="--c1:#f1e6db;--c2:#c4a083;--liquid:#8e5a36;--engrave:#f6e7cc" aria-label="Shop the Woody family">
+              <span class="family-card__media">
+                <span class="family-card__word" aria-hidden="true">Santal</span>
+                <span class="bottle" aria-hidden="true"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Santal Noir</small></span></span></span>
+              </span>
+            </a>
+            <div class="family-row__body">
+              <p class="family-row__index">Family III</p>
+              <h2 class="family-row__title">Woody</h2>
+              <p class="family-row__notes">Sandalwood, leather &amp; vanilla</p>
+              <p class="family-row__text">Creamy woods and soft leather for a signature that stays close.</p>
+              <ul class="family-row__list">
+                <li><a href="shop.html?family=woody" style="--liquid:#8e5a36"><span class="family-row__dot" aria-hidden="true"></span>Santal Noir<span class="family-row__price">from $135</span></a></li>
+              </ul>
+              <a class="btn btn--dark" href="shop.html?family=woody">Shop Woody</a>
+            </div>
+          </article>
+          <article class="family-row" id="fresh" data-reveal>
+            <a class="family-card" href="shop.html?family=fresh" data-tilt style="--c1:#f1f3e4;--c2:#c3cfab;--liquid:#e3d17a" aria-label="Shop the Fresh &amp; Citrus family">
+              <span class="family-card__media">
+                <span class="family-card__word" aria-hidden="true">Néroli</span>
+                <span class="bottle" aria-hidden="true"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>Néroli Lumière</small></span></span></span>
+              </span>
+            </a>
+            <div class="family-row__body">
+              <p class="family-row__index">Family IV</p>
+              <h2 class="family-row__title">Fresh &amp; Citrus</h2>
+              <p class="family-row__notes">Bergamot, neroli &amp; vetiver</p>
+              <p class="family-row__text">Bright and sunlit, made for clear mornings and warm days.</p>
+              <ul class="family-row__list">
+                <li><a href="shop.html?family=fresh" style="--liquid:#e6d27f"><span class="family-row__dot" aria-hidden="true"></span>Néroli Lumière<span class="family-row__price">from $105</span></a></li>
+              </ul>
+              <a class="btn btn--dark" href="shop.html?family=fresh">Shop Fresh &amp; Citrus</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" id="site-footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a class="footer__logo" href="index.html">Saomi</a>
+          <p>A house of fine fragrance, composed to be worn close and remembered long.</p>
+          <div class="socials">
+            <a href="#" aria-label="Saomi on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6"/></svg></a>
+            <a href="#" aria-label="Saomi on TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3.5v11a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3.5c.4 2.6 2.4 4.6 5 4.8"/></svg></a>
+            <a href="#" aria-label="Saomi on Pinterest"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M10.6 20.2 12.4 12m-.5 2.4c2.8.9 5.1-1 5.1-3.8 0-2.6-2.2-4.4-5-4.4-3.1 0-5 2-5 4.4 0 1 .4 1.9 1.1 2.4"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <h3>Shop</h3>
+          <ul><li><a href="shop.html">All fragrances</a></li><li><a href="index.html#bestsellers">Best sellers</a></li><li><a href="scent-families.html">Scent families</a></li><li><a href="cart.html">My bag</a></li></ul>
+        </div>
+        <div>
+          <h3>Help</h3>
+          <ul><li><a href="contact.html#shipping">Shipping</a></li><li><a href="contact.html#faq">FAQs</a></li><li><a href="account.html">Track an order</a></li><li><a href="mailto:hello@saomi.com">hello@saomi.com</a></li></ul>
+        </div>
+        <div>
+          <h3>Maison</h3>
+          <ul><li><a href="collection.html#story">Our story</a></li><li><a href="collection.html#notes">Ingredients</a></li><li><a href="account.html">My account</a></li><li><a href="contact.html">Contact</a></li></ul>
+        </div>
+      </div>
+
+      <p class="footer__mark" aria-hidden="true" data-reveal>Saomi</p>
+
+      <div class="footer__bottom">
+        <p>© 2026 Saomi. All rights reserved.</p>
+        <p><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
