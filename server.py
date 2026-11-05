@@ -104,6 +104,13 @@ CATALOG = {
     "santal-majeste": ("Santal Majesté", {"30 ml": 135, "50 ml": 195, "100 ml": 280}),
     "aura-celeste": ("Aura Céleste", {"30 ml": 105, "50 ml": 150, "100 ml": 215}),
     "elixir-de-nuit": ("Élixir de Nuit", {"30 ml": 150, "50 ml": 215, "100 ml": 305}),
+    "jasmin-eternel": ("Jasmin Éternel", {"30 ml": 130, "50 ml": 190, "100 ml": 270}),
+    "cuir-imperial": ("Cuir Impérial", {"30 ml": 155, "50 ml": 225, "100 ml": 320}),
+    "nectar-dor": ("Nectar d’Or", {"30 ml": 135, "50 ml": 195, "100 ml": 280}),
+    "ombre-rose": ("Ombre Rose", {"30 ml": 145, "50 ml": 210, "100 ml": 300}),
+    "fleur-sauvage": ("Fleur Sauvage", {"30 ml": 115, "50 ml": 165, "100 ml": 240}),
+    "ocean-infini": ("Océan Infini", {"30 ml": 110, "50 ml": 160, "100 ml": 230}),
+    "bois-de-cashmere": ("Bois de Cashmere", {"30 ml": 125, "50 ml": 180, "100 ml": 260}),
 }
 CONTACT_TOPICS = {"Order", "Product advice", "Gifting", "Other"}
 

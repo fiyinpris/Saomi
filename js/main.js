@@ -291,6 +291,13 @@
     'santal-majeste': 'santal-majeste.jpg',
     'aura-celeste': 'aura-celeste.webp',
     'elixir-de-nuit': 'elixir-de-nuit.jpg',
+    'jasmin-eternel': 'jasmin-eternel.jpg',
+    'cuir-imperial': 'cuir-imperial.jpg',
+    'nectar-dor': 'nectar-dor.jpg',
+    'ombre-rose': 'ombre-rose.jpg',
+    'fleur-sauvage': 'fleur-sauvage.jpg',
+    'ocean-infini': 'ocean-infini.jpg',
+    'bois-de-cashmere': 'bois-de-cashmere.jpg',
   };
   const photoOf = (slug) => `assets/img/products/${PHOTOS[slug]}`;
 

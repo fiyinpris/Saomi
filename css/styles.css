@@ -1053,6 +1053,23 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
 
 .spotlight { padding-top: 0; }
 
+/* Collection page: the range photographed side by side, shown whole at every width */
+.lineup { padding-top: 0; }
+.lineup__stage {
+  overflow: hidden;
+  border-radius: clamp(20px, 2.2vw, 32px);
+  background: var(--espresso);
+}
+.lineup__stage img {
+  width: 100%; height: auto;
+  aspect-ratio: 1376 / 768;
+  object-fit: cover;
+  transition: transform 1.4s var(--ease-out);
+}
+@media (hover: hover) {
+  .lineup__stage:hover img { transform: scale(1.03); }
+}
+
 .spotlight__stage {
   position: relative;
   overflow: hidden;
