@@ -281,12 +281,25 @@
   const bagCount = $('[data-bag-count]');
   let memoryBag = []; // used when storage is blocked
 
+  // The range, by slug, with each product's photograph (keep in step with CATALOG in server.py).
+  const PHOTOS = {
+    'soleil-dor': 'soleil-dor.jpg',
+    'velours-noir': 'velours-noir.jpg',
+    'rose-imperiale': 'rose-imperiale.jpg',
+    'verdant-obsession': 'verdant-obsession.jpg',
+    'lumiere-dopal': 'lumiere-dopal.jpg',
+    'santal-majeste': 'santal-majeste.jpg',
+    'aura-celeste': 'aura-celeste.webp',
+    'elixir-de-nuit': 'elixir-de-nuit.jpg',
+  };
+  const photoOf = (slug) => `assets/img/products/${PHOTOS[slug]}`;
+
   const bagStore = {
     read() {
-      try {
-        const items = JSON.parse(localStorage.getItem(BAG_KEY) || '[]');
-        return Array.isArray(items) ? items : [];
-      } catch (e) { return memoryBag; }
+      let items;
+      try { items = JSON.parse(localStorage.getItem(BAG_KEY) || '[]'); } catch (e) { items = memoryBag; }
+      // Anything no longer in the range (e.g. saved before the products changed) is dropped.
+      return Array.isArray(items) ? items.filter((i) => i && Object.prototype.hasOwnProperty.call(PHOTOS, i.slug)) : [];
     },
     write(items) {
       memoryBag = items;
@@ -327,7 +340,6 @@
     const addBtn = $('[data-add]', card);
     const addLabel = $('[data-add-label]', addBtn) || addBtn;
     const wish = $('[data-wish]', card);
-    const flip = $('[data-flip]', card);
 
     $$('input[type="radio"]', card).forEach((input) => {
       input.addEventListener('change', () => { price.textContent = `$${input.dataset.price}`; });
@@ -341,24 +353,13 @@
       });
     }
 
-    // Touch screens have no hover, so a button reveals the "worn" photograph instead.
-    if (flip) {
-      flip.addEventListener('click', () => {
-        const on = card.classList.toggle('is-mood');
-        flip.setAttribute('aria-pressed', String(on));
-      });
-    }
-
     addBtn.addEventListener('click', () => {
       const size = $('input:checked', card);
-      const media = $('.product__media', card);
       bagStore.add({
         slug: card.dataset.slug,
         name: addBtn.dataset.add,
         size: size.value,
         price: Number(size.dataset.price),
-        liquid: media.style.getPropertyValue('--liquid').trim(),
-        engrave: media.style.getPropertyValue('--engrave').trim(),
       });
 
       const label = addLabel.textContent;
@@ -416,7 +417,9 @@
     const search = $('[data-shop-search]');
     const empty = $('[data-shop-empty]');
     const inFamily = (card, f) => f === 'all' || card.dataset.family === f;
-    const haystack = (card) => `${$('.product__name', card).textContent} ${$('.product__notes', card).textContent}`.toLowerCase();
+    // Accents and curly apostrophes are ignored, so "elixir" finds Élixir and "d'or" finds Soleil d’Or.
+    const fold = (text) => text.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’‘]/g, "'").toLowerCase();
+    const haystack = (card) => fold(`${$('.product__name', card).textContent} ${$('.product__notes', card).textContent}`);
     let family = 'all';
     let query = '';
 
@@ -451,7 +454,7 @@
 
     chips.forEach((chip) => chip.addEventListener('click', () => { family = chip.dataset.filter; apply(true); }));
     if (search) {
-      search.addEventListener('input', () => { query = search.value.trim().toLowerCase(); apply(false); });
+      search.addEventListener('input', () => { query = fold(search.value.trim()); apply(false); });
     }
     const reset = $('[data-shop-reset]');
     if (reset) {
@@ -582,7 +585,6 @@
   const money = (n) => `$${Number(n).toLocaleString('en-US')}`;
   const EYE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>';
   const esc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const colour = (v, fallback) => (/^#[0-9a-f]{3,8}$/i.test(v || '') ? v : fallback);
 
   // Only same-site page names are accepted as a post-login destination.
   function nextPage(fallback) {
@@ -687,7 +689,7 @@
     return next ? `?next=${encodeURIComponent(next)}` : '';
   };
 
-  /* Sign in / create account: both finish on the code page */
+  /* Sign in / create account: both continue on the code page */
 
   const authForm = $('[data-auth-form]');
   if (authForm) {
@@ -695,7 +697,6 @@
     const status = $('[data-form-status]', authForm);
     const submit = $('button[type="submit"]', authForm);
     const label = submit.textContent;
-    const passwordChecks = signup ? watchNewPassword(authForm) : null;
     $$('[data-keep-next]').forEach((a) => { a.href += keepNext(); });
     session.then((user) => { if (user) location.replace(nextPage('account.html')); });
     clearOnInput(authForm);
@@ -703,24 +704,21 @@
     authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const f = authForm.elements;
-      const data = { email: f.email.value.trim(), password: f.password.value };
-      if (signup) {
-        data.name = f.name.value.trim();
-        data.newsletter = f.newsletter.checked;
-      } else {
-        data.remember = f.remember.checked;
-      }
+      // Sign-up step 1 is name + email only; the password is created after the email is confirmed.
+      const data = signup
+        ? { name: f.name.value.trim(), email: f.email.value.trim(), newsletter: f.newsletter.checked }
+        : { email: f.email.value.trim(), password: f.password.value, remember: f.remember.checked };
       const ok = validate(authForm, status, [
-        ...(signup ? [['name', !data.name, 'Please enter your name.']] : []),
+        ...(signup ? [['name', !data.name, 'Please enter your full name.']] : []),
         ['email', !EMAIL.test(data.email), 'Please enter a valid email address.'],
-        ...(signup ? passwordChecks() : [['password', !data.password, 'Please enter your password.']]),
+        ...(signup ? [] : [['password', !data.password, 'Please enter your password.']]),
       ]);
       if (!ok) return;
-      busy(submit, true, signup ? 'Creating account…' : 'Checking…');
+      busy(submit, true, signup ? 'Sending code…' : 'Checking…');
       setStatus(status, '', null);
       try {
         await api(signup ? '/api/signup' : '/api/login', data);
-        setStatus(status, 'We’ve emailed you a code.', 'success');
+        setStatus(status, 'Code sent. Check your inbox.', 'success');
         location.assign(`verify.html${keepNext()}`);
       } catch (err) {
         busy(submit, false, label);
@@ -753,29 +751,59 @@
     });
   }
 
-  /* Enter the emailed code (and, after a reset code, choose a new password) */
+  /* Code page: enter the emailed code, then (for sign-up or reset) create a password */
 
   const verifyForm = $('[data-verify-form]');
   if (verifyForm) {
-    const resetForm = $('[data-reset-form]');
+    const passwordStep = $('[data-password-step]');
     const status = $('[data-form-status]', verifyForm);
     const submit = $('button[type="submit"]', verifyForm);
     const group = $('[data-code-input]', verifyForm);
     const boxes = $$('input', group);
     const resendBtn = $('[data-resend]', verifyForm);
     const timer = $('[data-resend-timer]', verifyForm);
+    const steps = $('[data-steps]');
     const kicker = $('[data-verify-kicker]');
     const title = $('[data-verify-title]');
     const lead = $('[data-verify-lead]');
     const back = $('[data-verify-back]');
     const COPY = {
-      signup: ['Confirm your email', 'to confirm your email address', 'signup.html'],
-      login: ['Two-step sign in', 'to finish signing in', 'login.html'],
-      reset: ['Reset your password', 'to reset your password', 'forgot.html'],
+      signup: {
+        kicker: 'Confirm your email', why: 'to confirm your email address', back: 'signup.html',
+        steps: ['Your details', 'Verify email', 'Create password'],
+        passwordKicker: 'Almost done', passwordTitle: 'Create Your Password',
+        passwordLead: 'Your email address is confirmed. Create a password to finish setting up your account.',
+        passwordLabel: 'Create password', passwordButton: 'Create account',
+        done: (name) => `Your account is ready. Welcome to Saomi, ${name}.`,
+      },
+      reset: {
+        kicker: 'Reset your password', why: 'to reset your password', back: 'forgot.html',
+        steps: ['Your email', 'Verify email', 'New password'],
+        passwordKicker: 'Almost done', passwordTitle: 'Choose a New Password',
+        passwordLead: 'Pick a password you haven’t used here before. You’ll be signed out on your other devices.',
+        passwordLabel: 'New password', passwordButton: 'Save new password',
+        done: () => 'Password updated. Signing you in…',
+      },
+      login: { kicker: 'Two-step sign in', why: 'to finish signing in', back: 'login.html' },
     };
+    let purpose = 'login';
     let tick;
 
     const code = () => boxes.map((b) => b.value).join('');
+
+    // Progress dots for sign-up and reset; sign-in doesn't show them.
+    function showSteps(current) {
+      const labels = COPY[purpose].steps;
+      steps.hidden = !labels;
+      if (!labels) return;
+      $$('li', steps).forEach((li, i) => {
+        $('.steps__label', li).textContent = labels[i];
+        li.classList.toggle('is-done', i + 1 < current);
+        li.classList.toggle('is-current', i + 1 === current);
+        if (i + 1 === current) li.setAttribute('aria-current', 'step');
+        else li.removeAttribute('aria-current');
+      });
+    }
 
     function startTimer(seconds) {
       let left = Math.max(0, Number(seconds) || 0);
@@ -794,24 +822,30 @@
 
     function expired(message) {
       clearInterval(tick);
+      steps.hidden = true;
       kicker.textContent = 'Code expired';
       title.textContent = 'Start Again';
-      lead.textContent = message || 'This code has expired. Please sign in again to get a new one.';
+      lead.textContent = message || 'This code has expired. Please start again to get a new one.';
       verifyForm.hidden = true;
-      resetForm.hidden = true;
-      back.textContent = 'Back to sign in';
-      back.href = `login.html${keepNext()}`;
+      passwordStep.hidden = true;
+      $('[data-verify-switch]').hidden = false;
+      back.textContent = purpose === 'signup' ? 'Back to create account' : 'Back to sign in';
+      back.href = (purpose === 'signup' ? 'signup.html' : 'login.html') + keepNext();
     }
 
-    function showReset() {
+    function showPasswordStep() {
+      const copy = COPY[purpose];
       clearInterval(tick);
       verifyForm.hidden = true;
-      resetForm.hidden = false;
-      kicker.textContent = 'Almost done';
-      title.textContent = 'Choose a New Password';
-      lead.textContent = 'Pick a password you haven’t used here before. You’ll be signed out on your other devices.';
+      passwordStep.hidden = false;
       $('[data-verify-switch]').hidden = true;
-      resetForm.elements.password.focus();
+      kicker.textContent = copy.passwordKicker;
+      title.textContent = copy.passwordTitle;
+      lead.textContent = copy.passwordLead;
+      $('[data-password-label]', passwordStep).textContent = copy.passwordLabel;
+      $('[data-password-submit]', passwordStep).textContent = copy.passwordButton;
+      showSteps(3);
+      passwordStep.elements.password.focus();
     }
 
     function clearCode() {
@@ -856,14 +890,16 @@
     });
 
     api('/api/challenge').then((ch) => {
-      const copy = COPY[ch.purpose] || COPY.login;
-      kicker.textContent = copy[0];
-      back.href = copy[2] + keepNext();
-      if (ch.purpose === 'reset' && ch.verified) { showReset(); return; }
+      purpose = COPY[ch.purpose] ? ch.purpose : 'login';
+      const copy = COPY[purpose];
+      kicker.textContent = copy.kicker;
+      back.href = copy.back + keepNext();
+      if (ch.verified && copy.steps) { showPasswordStep(); return; } // came back after confirming
+      showSteps(2);
       lead.textContent = '';
       const strong = document.createElement('strong');
       strong.textContent = ch.email;
-      lead.append('We sent a 6-digit code to ', strong, ` ${copy[1]}. It expires in 10 minutes.`);
+      lead.append('We sent a 6-digit code to ', strong, ` ${copy.why}. It expires in 10 minutes.`);
       startTimer(ch.resendIn);
       boxes[0].focus();
     }).catch((err) => expired(err.status === 404 ? '' : err.message));
@@ -882,8 +918,13 @@
       setStatus(status, '', null);
       try {
         const res = await api('/api/verify', { code: value });
-        if (res.next === 'reset') { busy(submit, false, 'Verify'); showReset(); return; }
-        setStatus(status, `Welcome, ${res.user.name}.`, 'success');
+        if (res.next === 'password') {
+          busy(submit, false, 'Verify');
+          purpose = res.purpose;
+          showPasswordStep();
+          return;
+        }
+        setStatus(status, `Welcome back, ${res.user.name}.`, 'success');
         location.assign(nextPage('account.html'));
       } catch (err) {
         busy(submit, false, 'Verify');
@@ -898,6 +939,7 @@
       resendBtn.disabled = true;
       try {
         const res = await api('/api/resend', {});
+        group.classList.remove('is-invalid');
         setStatus(status, 'A new code is on its way. Codes sent earlier no longer work.', 'success');
         startTimer(res.resendIn);
         clearCode();
@@ -908,24 +950,26 @@
       }
     });
 
-    const resetStatus = $('[data-form-status]', resetForm);
-    const resetSubmit = $('button[type="submit"]', resetForm);
-    const resetChecks = watchNewPassword(resetForm);
-    clearOnInput(resetForm);
-    resetForm.addEventListener('submit', async (e) => {
+    const passwordStatus = $('[data-form-status]', passwordStep);
+    const passwordSubmit = $('[data-password-submit]', passwordStep);
+    const passwordChecks = watchNewPassword(passwordStep);
+    clearOnInput(passwordStep);
+    passwordStep.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (!validate(resetForm, resetStatus, resetChecks())) return;
-      busy(resetSubmit, true, 'Saving…');
-      setStatus(resetStatus, '', null);
+      if (!validate(passwordStep, passwordStatus, passwordChecks())) return;
+      const label = passwordSubmit.textContent;
+      busy(passwordSubmit, true, 'Saving…');
+      setStatus(passwordStatus, '', null);
       try {
-        await api('/api/reset', { password: resetForm.elements.password.value });
-        setStatus(resetStatus, 'Password updated. Signing you in…', 'success');
-        location.assign('account.html');
+        const res = await api('/api/set-password', { password: passwordStep.elements.password.value });
+        $('[data-verified-notice]', passwordStep).hidden = true;
+        setStatus(passwordStatus, COPY[purpose].done(res.user.name), 'success');
+        setTimeout(() => location.assign(nextPage('account.html')), 1200);
       } catch (err) {
-        busy(resetSubmit, false, 'Save new password');
+        busy(passwordSubmit, false, label);
         if (err.status === 410) { expired(err.message); return; }
-        setStatus(resetStatus, err.message, 'error');
-        if (err.field) markField(resetForm, err.field, true);
+        setStatus(passwordStatus, err.message, 'error');
+        if (err.field) markField(passwordStep, err.field, true);
       }
     });
   }
@@ -1071,7 +1115,6 @@
     const FREE_FROM = 150;
     let placed = null;
 
-    const bottle = (name, liquid, engrave) => `<span class="bottle" style="--liquid:${colour(liquid, '#d9a85f')}${engrave ? `;--engrave:${colour(engrave, '')}` : ''}" aria-hidden="true"><span class="bottle__cap"></span><span class="bottle__neck"></span><span class="bottle__glass"><span class="bottle__label"><em>Saomi</em><small>${esc(name)}</small></span></span></span>`;
 
     function render(focus) {
       if (placed) {
@@ -1089,7 +1132,7 @@
       if (!items.length) {
         box.innerHTML = `
           <div class="cart__empty">
-            ${bottle('Liquid Gold', '#d9a85f')}
+            <img class="cart__empty-photo" src="${photoOf('soleil-dor')}" alt="" width="112" height="140">
             <p class="kicker">Your bag</p>
             <h2 class="section-title">Your Bag Is Empty</h2>
             <p>Find a signature that lingers long after you leave the room.</p>
@@ -1105,21 +1148,21 @@
           <div>
             <div class="cart__head"><span>${count} ${count === 1 ? 'item' : 'items'}</span><span>Total</span></div>
             <ul class="cart__list">${items.map((item, i) => `
-              <li class="line" data-index="${i}">
-                <a class="line__media" href="shop.html" style="--liquid:${colour(item.liquid, '#d9a85f')}" tabindex="-1" aria-hidden="true">${bottle(item.name, item.liquid, item.engrave)}</a>
+              <li class="cart-line" data-index="${i}">
+                <a class="cart-line__media" href="shop.html" tabindex="-1" aria-hidden="true"><img src="${photoOf(item.slug)}" alt="" width="96" height="120" loading="lazy"></a>
                 <div>
-                  <p class="line__name">${esc(item.name)}</p>
-                  <p class="line__meta">${esc(item.size)} · ${money(item.price)}</p>
-                  <div class="line__controls">
+                  <p class="cart-line__name">${esc(item.name)}</p>
+                  <p class="cart-line__meta">${esc(item.size)} · ${money(item.price)}</p>
+                  <div class="cart-line__controls">
                     <div class="qty" role="group" aria-label="Quantity of ${esc(item.name)}">
                       <button type="button" data-qty="-1" aria-label="Remove one" ${item.qty <= 1 ? 'disabled' : ''}>−</button>
                       <output>${Number(item.qty)}</output>
                       <button type="button" data-qty="1" aria-label="Add one" ${item.qty >= 10 ? 'disabled' : ''}>+</button>
                     </div>
-                    <button class="line__remove" type="button" data-remove>Remove</button>
+                    <button class="cart-line__remove" type="button" data-remove>Remove</button>
                   </div>
                 </div>
-                <p class="line__total">${money(item.price * item.qty)}</p>
+                <p class="cart-line__total">${money(item.price * item.qty)}</p>
               </li>`).join('')}
             </ul>
           </div>
@@ -1156,7 +1199,7 @@
     }
 
     box.addEventListener('click', async (e) => {
-      const line = e.target.closest('.line');
+      const line = e.target.closest('.cart-line');
       const qtyBtn = e.target.closest('[data-qty]');
       if (line && qtyBtn) {
         const d = Number(qtyBtn.dataset.qty);

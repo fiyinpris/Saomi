@@ -72,7 +72,7 @@ PBKDF2_ITERATIONS = 600_000
 MAX_BODY = 64 * 1024
 
 CODE_SECONDS = 10 * 60      # a code is valid for 10 minutes
-RESET_SECONDS = 15 * 60     # time to choose a new password after the code is accepted
+PASSWORD_STEP_SECONDS = 15 * 60  # time to choose a password after a sign-up or reset code is accepted
 CHALLENGE_SECONDS = 30 * 60
 MAX_CODE_ATTEMPTS = 5
 RESEND_AFTER = 60
@@ -96,12 +96,14 @@ PRIVATE = ("data", "server.py", "_ref")
 
 # Prices are checked here so an order total never comes from the browser.
 CATALOG = {
-    "liquid-gold": ("Liquid Gold", {"30 ml": 125, "50 ml": 185, "100 ml": 265}),
-    "rose-nocturne": ("Rose Nocturne", {"30 ml": 115, "50 ml": 165, "100 ml": 240}),
-    "santal-noir": ("Santal Noir", {"30 ml": 135, "50 ml": 195, "100 ml": 280}),
-    "neroli-lumiere": ("Néroli Lumière", {"30 ml": 105, "50 ml": 150, "100 ml": 215}),
-    "oud-imperial": ("Oud Impérial", {"30 ml": 145, "50 ml": 210, "100 ml": 295}),
-    "iris-poudre": ("Iris Poudré", {"30 ml": 120, "50 ml": 175, "100 ml": 250}),
+    "soleil-dor": ("Soleil d’Or", {"30 ml": 125, "50 ml": 185, "100 ml": 265}),
+    "velours-noir": ("Velours Noir", {"30 ml": 140, "50 ml": 205, "100 ml": 290}),
+    "rose-imperiale": ("Rose Impériale", {"30 ml": 120, "50 ml": 170, "100 ml": 245}),
+    "verdant-obsession": ("Verdant Obsession", {"30 ml": 115, "50 ml": 165, "100 ml": 240}),
+    "lumiere-dopal": ("Lumière d’Opal", {"30 ml": 110, "50 ml": 160, "100 ml": 230}),
+    "santal-majeste": ("Santal Majesté", {"30 ml": 135, "50 ml": 195, "100 ml": 280}),
+    "aura-celeste": ("Aura Céleste", {"30 ml": 105, "50 ml": 150, "100 ml": 215}),
+    "elixir-de-nuit": ("Élixir de Nuit", {"30 ml": 150, "50 ml": 215, "100 ml": 305}),
 }
 CONTACT_TOPICS = {"Order", "Product advice", "Gifting", "Other"}
 
@@ -407,7 +409,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             ("POST", "/api/verify"): self.api_verify,
             ("POST", "/api/resend"): self.api_resend,
             ("POST", "/api/forgot"): self.api_forgot,
-            ("POST", "/api/reset"): self.api_reset,
+            ("POST", "/api/set-password"): self.api_set_password,
             ("POST", "/api/password"): self.api_change_password,
             ("POST", "/api/logout"): self.api_logout,
             ("POST", "/api/logout-all"): self.api_logout_all,
@@ -544,32 +546,29 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         return self.send_json(200, {"user": public_user(user) if user else None})
 
     def api_signup(self, body):
+        """Step 1 of registration: name and email only. The password is chosen after the email is confirmed."""
         name = clean_text(body.get("name"), 80)
         email = clean_text(body.get("email"), 254).lower()
-        password = body.get("password") if isinstance(body.get("password"), str) else ""
         newsletter = body.get("newsletter") is True
         if not name:
-            return self.send_json(400, {"error": "Please enter your name.", "field": "name"})
+            return self.send_json(400, {"error": "Please enter your full name.", "field": "name"})
         if not EMAIL_RE.match(email):
             return self.send_json(400, {"error": "Please enter a valid email address.", "field": "email"})
-        problem = password_problem(password, email, name)
-        if problem:
-            return self.send_json(400, {"error": problem, "field": "password"})
         if self.mail_blocked(email):
             return self.send_json(429, self.TOO_MANY_MAILS)
-        taken = {"error": "An account with this email already exists. Try signing in instead.", "field": "email"}
+        taken = {"error": "An account with this email already exists. Please sign in instead.", "field": "email"}
         try:
             with db() as conn:
                 existing = conn.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
                 if existing and existing["verified"]:
                     return self.send_json(409, taken)
-                if existing:  # signed up before but never confirmed: start over with the new details
-                    conn.execute("UPDATE users SET name = ?, password = ? WHERE id = ?", (name, hash_password(password), existing["id"]))
+                if existing:  # started before but never finished: start over with the new details
+                    conn.execute("UPDATE users SET name = ?, password = '' WHERE id = ?", (name, existing["id"]))
                     user_id = existing["id"]
                 else:
                     user_id = conn.execute(
-                        "INSERT INTO users (name, email, password, created_at, verified) VALUES (?, ?, ?, ?, 0)",
-                        (name, email, hash_password(password), int(time.time())),
+                        "INSERT INTO users (name, email, password, created_at, verified) VALUES (?, ?, '', ?, 0)",
+                        (name, email, int(time.time())),
                     ).lastrowid
                 cookie, code = self.create_challenge(conn, "signup", email, user_id, {"newsletter": newsletter, "remember": True})
         except sqlite3.IntegrityError:  # two sign-ups for the same email at once
@@ -586,19 +585,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if limited(key, LOGIN_WINDOW, LOGIN_MAX_FAILURES):
             return self.send_json(429, {"error": "Too many attempts. Please wait a few minutes and try again."})
         with db() as conn:
-            user = conn.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
+            row = conn.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
+            user = row if row and row["verified"] else None  # unfinished registrations can't sign in
             ok = check_password(password, user["password"] if user else _DUMMY_HASH) and user is not None
             if not ok:
                 record(key)
                 return self.send_json(401, {"error": "That email and password don't match. Please try again."})
             if self.mail_blocked(email):
                 return self.send_json(429, self.TOO_MANY_MAILS)
-            purpose = "login" if user["verified"] else "signup"  # unconfirmed accounts finish confirming first
-            cookie, code = self.create_challenge(conn, purpose, email, user["id"], {"remember": remember})
+            cookie, code = self.create_challenge(conn, "login", email, user["id"], {"remember": remember})
         forget(key)
-        if not self.mail_code(purpose, email, user["name"], code):
+        if not self.mail_code("login", email, user["name"], code):
             return self.send_json(502, self.NO_MAIL)
-        return self.challenge_reply(purpose, email, cookie)
+        return self.challenge_reply("login", email, cookie)
 
     def api_forgot(self, body):
         email = clean_text(body.get("email"), 254).lower()
@@ -642,16 +641,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 left = MAX_CODE_ATTEMPTS - ch["attempts"] - 1
                 message = "That code isn't right." + (f" {left} {'try' if left == 1 else 'tries'} left." if left else " Please request a new code.")
                 return self.send_json(400, {"error": message, "field": "code"})
+            if ch["purpose"] in ("signup", "reset"):
+                # Email confirmed: the next step is choosing a password, within PASSWORD_STEP_SECONDS.
+                conn.execute("UPDATE challenges SET verified = 1, expires_at = ? WHERE token_hash = ?",
+                             (int(time.time()) + PASSWORD_STEP_SECONDS, ch["token_hash"]))
+                return self.send_json(200, {"next": "password", "purpose": ch["purpose"]})
             data = json.loads(ch["data"])
             user = conn.execute("SELECT * FROM users WHERE id = ?", (ch["user_id"],)).fetchone()
-            if ch["purpose"] == "reset":
-                conn.execute("UPDATE challenges SET verified = 1, expires_at = ? WHERE token_hash = ?",
-                             (int(time.time()) + RESET_SECONDS, ch["token_hash"]))
-                return self.send_json(200, {"next": "reset"})
-            if ch["purpose"] == "signup":
-                conn.execute("UPDATE users SET verified = 1 WHERE id = ?", (user["id"],))
-                if data.get("newsletter"):
-                    conn.execute("INSERT OR IGNORE INTO subscribers (email, created_at) VALUES (?, ?)", (user["email"], int(time.time())))
             conn.execute("DELETE FROM challenges WHERE token_hash = ?", (ch["token_hash"],))
             session = self.start_session(conn, user["id"], data.get("remember", True))
         return self.send_json(200, {"next": "account", "user": public_user(user)}, [session, clear])
@@ -677,22 +673,27 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return self.send_json(502, self.NO_MAIL)
         return self.send_json(200, {"ok": True, "email": mask_email(ch["email"]), "resendIn": RESEND_AFTER})
 
-    def api_reset(self, body):
+    def api_set_password(self, body):
+        """Final step after a confirmed code: finishes a registration or resets a forgotten password."""
         password = body.get("password") if isinstance(body.get("password"), str) else ""
         with db() as conn:
             ch = self.current_challenge(conn)
-            if not ch or ch["purpose"] != "reset" or not ch["verified"] or ch["user_id"] is None:
-                return self.send_json(410, {"error": "This reset link has expired. Please request a new code."})
+            if not ch or ch["purpose"] not in ("signup", "reset") or not ch["verified"] or ch["user_id"] is None:
+                return self.send_json(410, {"error": "This step has expired. Please start again to get a new code."})
             user = conn.execute("SELECT * FROM users WHERE id = ?", (ch["user_id"],)).fetchone()
             problem = password_problem(password, user["email"], user["name"])
             if problem:
                 return self.send_json(400, {"error": problem, "field": "password"})
-            conn.execute("UPDATE users SET password = ? WHERE id = ?", (hash_password(password), user["id"]))
+            conn.execute("UPDATE users SET password = ?, verified = 1 WHERE id = ?", (hash_password(password), user["id"]))
             conn.execute("DELETE FROM sessions WHERE user_id = ?", (user["id"],))  # sign out everywhere
             conn.execute("DELETE FROM challenges WHERE user_id = ?", (user["id"],))
+            if ch["purpose"] == "signup" and json.loads(ch["data"]).get("newsletter"):
+                conn.execute("INSERT OR IGNORE INTO subscribers (email, created_at) VALUES (?, ?)", (user["email"], int(time.time())))
             session = self.start_session(conn, user["id"], True)
-        send_mail(user["email"], *password_changed_email(user["name"]))
-        return self.send_json(200, {"user": public_user(user)}, [session, self.make_cookie(CHALLENGE_COOKIE, "", 0)])
+        if ch["purpose"] == "reset":
+            send_mail(user["email"], *password_changed_email(user["name"]))
+        return self.send_json(200, {"purpose": ch["purpose"], "user": public_user(user)},
+                              [session, self.make_cookie(CHALLENGE_COOKIE, "", 0)])
 
     def api_change_password(self, body):
         current = body.get("current") if isinstance(body.get("current"), str) else ""

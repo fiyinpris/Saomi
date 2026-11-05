@@ -101,6 +101,11 @@
             <p class="auth__quote">“A signature that lingers long after you leave the room.”</p>
           </div>
           <div class="auth__panel" aria-label="Enter your code">
+            <ol class="steps" aria-label="Progress" data-steps hidden>
+              <li data-step="1"><span class="steps__num">1</span><span class="steps__label">Your details</span></li>
+              <li class="is-current" aria-current="step" data-step="2"><span class="steps__num">2</span><span class="steps__label">Verify email</span></li>
+              <li data-step="3"><span class="steps__num">3</span><span class="steps__label">Create password</span></li>
+            </ol>
             <p class="kicker" data-verify-kicker>Check your inbox</p>
             <h1 class="section-title" id="auth-title" data-verify-title>Enter Your Code</h1>
             <p class="auth__lead" data-verify-lead>We sent a 6-digit code to your email. It expires in 10 minutes.</p>
@@ -120,9 +125,10 @@
               <p class="form__legal">Didn't get it? Check your spam folder, or <button type="button" class="text-btn" data-resend>send a new code</button><span data-resend-timer></span>.</p>
             </form>
 
-            <form class="form" novalidate data-reset-form hidden>
+            <form class="form" novalidate data-password-step hidden>
+              <p class="notice notice--success" role="status" data-verified-notice><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16 9.8"/></svg><span>Email confirmed.</span></p>
               <div class="field">
-                <label for="a-password">New password</label>
+                <label for="a-password" data-password-label>Password</label>
                 <div class="field__password">
                   <input id="a-password" name="password" type="password" autocomplete="new-password" maxlength="128" required aria-describedby="a-password-rules">
                   <button type="button" class="field__toggle" aria-label="Show password" aria-pressed="false" data-toggle-password><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
@@ -144,7 +150,7 @@
                   <li data-rule="match">Passwords match</li>
                 </ul>
               </div>
-              <button class="btn btn--dark btn--block" type="submit">Save new password</button>
+              <button class="btn btn--dark btn--block" type="submit" data-password-submit>Save password</button>
               <p class="form__status" role="status" data-form-status></p>
             </form>
 

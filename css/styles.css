@@ -658,109 +658,6 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
 }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
-/* ---------- Bottle (pure CSS, tinted by --liquid; modelled on the bottle in the film) ---------- */
-
-.bottle {
-  position: relative;
-  display: block;
-  width: var(--bw, 140px);
-  aspect-ratio: 100 / 124;
-  container-type: inline-size;
-}
-.bottle::after {
-  content: "";
-  position: absolute; left: 4%; right: 4%; bottom: -6%;
-  height: 10%;
-  background: radial-gradient(closest-side, rgba(40, 26, 10, .32), transparent);
-  filter: blur(2px);
-  z-index: -1;
-}
-
-/* Gold atomiser */
-.bottle__cap {
-  position: absolute; left: 35%; width: 30%; top: 0; height: 13%;
-  border-radius: 3cqw 3cqw 1cqw 1cqw;
-  background: linear-gradient(90deg, #7a5722 0%, #d2ac62 16%, #fff1c8 32%, #e0bd76 50%, #a77b39 72%, #f0d7a0 86%, #7a5722 100%);
-  box-shadow: inset 0 -1.5cqw 2cqw rgba(80, 50, 10, .3), inset 0 1px 0 rgba(255, 255, 255, .7);
-}
-.bottle__cap::before {
-  content: "";
-  position: absolute; left: 50%; top: 24%;
-  width: 6cqw; height: 6cqw;
-  translate: -50% 0;
-  border-radius: 50%;
-  background: radial-gradient(circle, #4a3415 0 32%, #f5e4bb 40%, #c9a25c 70%);
-}
-
-/* Collar with a ring groove */
-.bottle__neck {
-  position: absolute; left: 30%; width: 40%; top: 12.5%; height: 10.5%;
-  border-radius: 1.5cqw;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, .55) 0 7%, transparent 7% 44%, rgba(70, 44, 10, .38) 44% 50%, rgba(255, 255, 255, .35) 50% 54%, transparent 54%),
-    linear-gradient(90deg, #7a5722 0%, #d8b46b 16%, #fff3cf 34%, #e5c47f 52%, #a77b39 74%, #f2dba6 88%, #7a5722 100%);
-  box-shadow: 0 1.2cqw 1.6cqw -1cqw rgba(60, 38, 8, .45);
-}
-
-/* Thick clear glass */
-.bottle__glass {
-  position: absolute; left: 0; right: 0; top: 22%; bottom: 0;
-  border-radius: 9cqw;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, .9) 0%, rgba(255, 255, 255, .28) 5%, rgba(255, 255, 255, .05) 22%, rgba(255, 255, 255, .05) 78%, rgba(255, 255, 255, .32) 95%, rgba(255, 255, 255, .85) 100%),
-    color-mix(in oklab, var(--liquid, #d9a85f), white 80%);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, .95),
-    inset 0 1.5cqw 2cqw rgba(255, 255, 255, .7),
-    inset 0 -3cqw 5cqw rgba(60, 40, 15, .1),
-    0 14cqw 18cqw -12cqw rgba(40, 28, 12, .5);
-}
-
-/* Liquid */
-.bottle__glass::before {
-  content: "";
-  position: absolute; inset: 9% 8% 10%;
-  border-radius: 6cqw;
-  background:
-    linear-gradient(180deg,
-      color-mix(in oklab, var(--liquid, #d9a85f), white 26%) 0%,
-      var(--liquid, #d9a85f) 42%,
-      color-mix(in oklab, var(--liquid, #d9a85f), #2b1606 30%) 100%);
-  box-shadow:
-    inset 0 1.2cqw 0 rgba(255, 255, 255, .38),
-    inset 0 0 0 1px rgba(255, 255, 255, .25),
-    inset 0 -4cqw 8cqw rgba(40, 20, 5, .2);
-}
-
-/* Highlight streak */
-.bottle__glass::after {
-  content: "";
-  position: absolute; left: 5%; top: 7%;
-  width: 4.5%; height: 78%;
-  border-radius: 3cqw;
-  background: linear-gradient(180deg, rgba(255, 255, 255, .95), rgba(255, 255, 255, .08));
-}
-
-/* Engraved wordmark */
-.bottle__label {
-  position: absolute; left: 10%; right: 10%; top: 30%;
-  z-index: 1;
-  display: grid; justify-items: center; gap: 2cqw;
-  text-align: center;
-  color: var(--engrave, color-mix(in oklab, var(--liquid, #d9a85f), #1d0f04 72%));
-}
-.bottle__label em {
-  font: normal 500 16cqw/1 var(--font-serif);
-  letter-spacing: -.01em;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, .3);
-}
-.bottle__label small {
-  font-size: 3.4cqw; font-weight: 500; line-height: 1.2;
-  letter-spacing: .24em; text-transform: uppercase;
-  white-space: nowrap;
-  opacity: .78;
-}
-
 /* ---------- Split section head (title left, copy right) ---------- */
 
 .section-head--split { display: grid; gap: 18px; justify-items: start; text-align: left; }
@@ -849,7 +746,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
 
 .shop__more { display: none; margin-top: 30px; }
 
-@media (min-width: 1180px) {
+@media (min-width: 1280px) {
   .shop__layout {
     grid-template-columns: minmax(250px, 290px) minmax(0, 1fr);
     column-gap: clamp(48px, 5vw, 84px);
@@ -860,53 +757,38 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   .shop__more { display: inline-flex; }
 }
 
-/* Track: a swipe row on phones, a grid from 640px */
+/* Shop grid: columns only ever increase with the screen (2 up to 899px, then 3),
+   so cards never jump between layouts. The home page row is set up further down. */
 .carousel { position: relative; }
 
-/* Positioned so absolutely positioned children (e.g. .sr-only labels) are clipped
-   by the scroller instead of widening the mobile layout viewport. */
 .products {
   position: relative;
-  display: flex;
-  gap: 16px;
-  margin: 0 calc(-1 * var(--gutter));
-  padding: 4px var(--gutter) 8px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--gutter);
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 12px;
 }
-.products::-webkit-scrollbar { display: none; }
 
 .product {
   position: relative;
-  flex: 0 0 calc((100% - 16px) / 1.3);
+  min-width: 0;
   container-type: inline-size;
   display: flex; flex-direction: column;
-  scroll-snap-align: start;
 }
 .product[hidden] { display: none; }
-.product.is-entering { animation: card-in .7s var(--ease-out) both; animation-delay: calc(var(--n, 0) * 70ms); }
-@keyframes card-in { from { opacity: 0; transform: translateY(22px); } }
+/* Cards fade in place rather than sliding, so the grid stays put while it appears. */
+.js .product[data-reveal] { transform: none; }
+.product.is-entering { animation: card-in .6s var(--ease-out) both; animation-delay: calc(var(--n, 0) * 60ms); }
+@keyframes card-in { from { opacity: 0; } }
 
-@media (min-width: 640px) {
-  .products {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 44px 20px;
-    margin: 0; padding: 0;
-    overflow: visible;
-  }
+@media (min-width: 560px) {
+  .products { gap: 40px 18px; }
 }
 @media (min-width: 900px) {
-  .products { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 52px clamp(16px, 2vw, 26px); }
-}
-@media (min-width: 1180px) and (max-width: 1279px) {
-  .products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .products { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 52px clamp(18px, 2vw, 26px); }
 }
 
-/* Media: tinted studio backdrop. Sizes use cqw (the card is the container). */
+/* Media: the product photograph, cropped to the same 4:5 frame on every card so rows line up.
+   The tint behind it only shows while the photo loads. */
 .product__media {
   position: relative;
   aspect-ratio: 4 / 5;
@@ -914,78 +796,20 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   overflow: hidden;
   isolation: isolate;
   border-radius: 16px;
-  background:
-    radial-gradient(64% 46% at 50% 36%, color-mix(in oklab, var(--liquid), #fffaf1 78%) 0%, transparent 72%),
-    linear-gradient(180deg, color-mix(in oklab, var(--liquid), #fbf7f0 66%) 0%, color-mix(in oklab, var(--liquid), #fbf7f0 38%) 100%);
+  background: color-mix(in oklab, var(--liquid), #fbf7f0 70%);
 }
 
-.product__stage { position: absolute; inset: 0; }
-
-.product__plinth {
-  position: absolute; left: 50%; bottom: 14cqw;
-  width: 60cqw; height: 19cqw;
-  translate: -50% 0;
-  border-radius: 0 0 50% 50% / 0 0 28% 28%;
-  background: linear-gradient(90deg,
-    color-mix(in oklab, var(--liquid), #e4d6bf 70%) 0%,
-    #fbf7f0 36%, #f5ede0 62%,
-    color-mix(in oklab, var(--liquid), #d8c6aa 70%) 100%);
-  box-shadow: 0 36px 40px -30px rgba(40, 25, 10, .55);
-}
-.product__plinth::before {
-  content: "";
-  position: absolute; left: 0; right: 0; top: 0;
-  height: 10cqw;
-  translate: 0 -50%;
-  border-radius: 50%;
-  background: radial-gradient(ellipse at 50% 38%, #fffdf8 0%, #f3eadb 68%, color-mix(in oklab, var(--liquid), #e6d8c2 72%) 100%);
-}
-
-.product__stage .bottle {
-  --bw: 44cqw;
-  position: absolute; left: 50%; bottom: 31cqw;
-  translate: -50% 0;
-  transition: transform 1s var(--ease-out);
-}
-
-.product__no {
-  position: absolute; left: 16px; bottom: 12px;
-  font: italic 400 1.05rem/1 var(--font-serif);
-  color: color-mix(in oklab, var(--liquid), #1d1006 62%);
-  opacity: .75;
-}
-
-/* Duotone mood photograph: grey image, shadows lifted to a deep tone, highlights tinted */
-.product__mood {
-  position: absolute; inset: 0; z-index: 2;
-  overflow: hidden;
-  isolation: isolate;
-  clip-path: inset(100% 0 0 0);
-  transition: clip-path .9s var(--ease-io);
-}
-.product__mood img {
+/* Every bottle sits in the middle of its photo, so a centred crop keeps it whole. */
+.product__photo {
+  position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  filter: grayscale(1) contrast(1.16) brightness(1.1);
-  transform: scale(1.14);
-  transition: transform 1.6s var(--ease-out);
+  object-position: 50% 50%;
+  transition: transform 1.2s var(--ease-out);
 }
-.product__mood::before,
-.product__mood::after {
-  content: "";
-  position: absolute; inset: 0; z-index: 1;
-  pointer-events: none;
-}
-.product__mood::before { background: color-mix(in oklab, var(--liquid), #1a0c04 78%); mix-blend-mode: lighten; }
-.product__mood::after { background: color-mix(in oklab, var(--liquid), #fff1dc 14%); mix-blend-mode: multiply; }
-
-.product.is-mood .product__mood { clip-path: inset(0); }
-.product.is-mood .product__mood img { transform: none; }
 
 @media (hover: hover) {
-  .product:hover .product__mood { clip-path: inset(0); }
-  .product:hover .product__mood img { transform: none; }
-  .product:hover .product__stage .bottle { transform: translateY(-8px); }
+  .product:hover .product__photo { transform: scale(1.05); }
 }
 
 .badge {
@@ -997,9 +821,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   white-space: nowrap;
 }
 
-.product__wish,
-.product__flip {
-  position: absolute; right: 12px; z-index: 3;
+.product__wish {
+  position: absolute; top: 12px; right: 12px; z-index: 3;
   width: 38px; height: 38px;
   display: grid; place-items: center;
   border-radius: 50%;
@@ -1009,17 +832,10 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   color: var(--ink);
   transition: background-color .3s ease;
 }
-.product__wish { top: 12px; }
-.product__flip { bottom: 12px; }
-.product__wish:hover, .product__flip:hover { background: var(--ivory); }
-.product__wish svg, .product__flip svg { width: 18px; height: 18px; transition: fill .3s ease, stroke .3s ease, transform .5s var(--ease-out); }
+.product__wish:hover { background: var(--ivory); }
+.product__wish svg { width: 18px; height: 18px; transition: fill .3s ease, stroke .3s ease, transform .5s var(--ease-out); }
 .product__wish[aria-pressed="true"] svg { fill: var(--gold-deep); stroke: var(--gold-deep); animation: heart-pop .5s var(--ease-out); }
-.product.is-mood .product__flip svg { transform: rotate(180deg); }
 @keyframes heart-pop { 40% { transform: scale(1.3); } }
-
-@media (hover: hover) {
-  .product__flip { display: none; }
-}
 
 /* Body */
 .product__body { flex: 1; display: flex; flex-direction: column; }
@@ -1072,10 +888,49 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
 .product__add svg { width: 17px; height: 17px; }
 .product__add:hover, .product__add.is-added { background: var(--gold-deep); }
 
-/* Narrow cards: sizes take their own row */
-@container (max-width: 250px) {
-  .product__buy { flex-wrap: wrap; }
+/* Narrow cards: sizes take their own full-width row, with Add below */
+@container (max-width: 270px) {
+  .product__buy { flex-wrap: wrap; gap: 8px; }
+  .product__buy .sizes { flex: 1 1 100%; }
+  .product__buy .sizes label { flex: 1; }
+  .product__buy .sizes span { padding-inline: 4px; text-align: center; }
   .product__add { flex: 1; }
+}
+
+/* Phone-size cards (two per row): smaller type, price under the name, notes held to two lines
+   so every card in a row lines up. */
+@container (max-width: 210px) {
+  .product__media { margin-bottom: 12px; border-radius: 12px; }
+  .badge { top: 10px; left: 10px; padding: 4px 7px; font-size: .5rem; letter-spacing: .2em; }
+  .product__wish { top: 8px; right: 8px; width: 32px; height: 32px; }
+  .product__wish svg { width: 15px; height: 15px; }
+  .product__head { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .product__name {
+    max-width: 100%;
+    overflow: hidden;
+    font-size: 1.18rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .price { font-size: .86rem; }
+  .product__notes {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    min-height: 3.3em;
+    margin: 6px 0 12px;
+    overflow: hidden;
+    line-height: 1.65;
+    letter-spacing: .14em;
+  }
+  .product__buy { padding-top: 12px; }
+  .product__add { height: 38px; padding: 0 12px; }
+}
+
+/* Smallest phones (320px screens): tighter size chips so all three fit */
+@container (max-width: 150px) {
+  .product__buy .sizes { gap: 3px; }
+  .product__buy .sizes span { padding: 6px 1px; font-size: .56rem; letter-spacing: 0; }
 }
 
 .carousel__controls {
@@ -1142,16 +997,13 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform .7s var(--ease-out);
 }
-.family-card__media::before {
-  /* plinth */
-  content: "";
-  position: absolute; left: 50%; bottom: 13%;
-  width: 62%; height: 9%;
-  translate: -50% 0;
-  z-index: -1;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0));
+.family-card__photo {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-out);
 }
+.family-card:hover .family-card__photo { transform: scale(1.05); }
 .family-card__media::after {
   content: "";
   position: absolute; inset: 0;
@@ -1162,28 +1014,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
 }
 .family-card:hover .family-card__media::after { opacity: 1; }
 
-.family-card__word {
-  position: absolute; left: 0; right: 0; top: 14%;
-  z-index: -1;
-  text-align: center;
-  font: italic 400 22cqw/1 var(--font-serif);
-  color: color-mix(in oklab, var(--c2), #3b2414 18%);
-  opacity: .3;
-  transition: transform 1s var(--ease-out), opacity .6s ease;
-}
-.family-card:hover .family-card__word { transform: translateY(-6px); opacity: .42; }
-
-.family-card .bottle {
-  --bw: 44%;
-  margin-top: 22%;
-  transition: transform 1s var(--ease-out);
-}
-.family-card:hover .bottle { transform: translateY(-10px) rotate(-2.5deg); }
-
 @media (min-width: 1024px) {
   .family-card__media { aspect-ratio: 9 / 10; }
-  .family-card__word { top: 11%; }
-  .family-card .bottle { --bw: 40%; margin-top: 20%; }
 }
 
 .family-card__body {
@@ -1857,18 +1689,34 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
 }
 .row-head .section-title { text-indent: 0; }
 
-@media (min-width: 640px) and (max-width: 1023px) {
-  .products.products--row {
-    display: flex;
-    gap: 20px;
-    margin: 0 calc(-1 * var(--gutter));
-    padding: 4px var(--gutter) 8px;
-    overflow-x: auto;
-  }
-  .products--row .product { flex: 0 0 calc((100% - 20px) / 2.2); }
+/* Home row: one row of four. On smaller screens it becomes a swipe row with the next card
+   peeking in (positioned so .sr-only children are clipped by it, not the page). */
+.products.products--row {
+  display: flex;
+  gap: 16px;
+  margin: 0 calc(-1 * var(--gutter));
+  padding: 4px var(--gutter) 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.products--row::-webkit-scrollbar { display: none; }
+.products--row .product { flex: 0 0 calc((100% - 16px) / 1.3); scroll-snap-align: start; }
+
+@media (min-width: 480px) {
+  .products.products--row { gap: 20px; }
+  .products--row .product { flex-basis: calc((100% - 20px) / 2.2); }
 }
 @media (min-width: 1024px) {
-  .products.products--row { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 1.8vw, 26px); }
+  .products.products--row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(16px, 1.8vw, 26px);
+    margin: 0; padding: 0;
+    overflow: visible;
+  }
 }
 
 /* ---------- Shop page extras ---------- */
@@ -2093,31 +1941,29 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   color: var(--muted);
 }
 
-.line {
+.cart-line {
   display: grid; grid-template-columns: 96px minmax(0, 1fr) auto;
   gap: 16px 22px; align-items: center;
   padding: 22px 0;
   border-bottom: 1px solid var(--line);
 }
-.line__media {
+.cart-line__media {
   aspect-ratio: 4 / 5;
   display: grid; place-items: center;
   overflow: hidden;
   border-radius: 12px;
-  container-type: inline-size;
-  background: linear-gradient(180deg, color-mix(in oklab, var(--liquid), #fbf7f0 66%), color-mix(in oklab, var(--liquid), #fbf7f0 40%));
+  background: var(--sand);
 }
-.line__media .bottle { --bw: 54cqw; }
-.line__media .bottle::after { display: none; }
-.line__name { font: 500 1.35rem/1.15 var(--font-serif); }
-.line__meta {
+.cart-line__media img { width: 100%; height: 100%; object-fit: cover; }
+.cart-line__name { font: 500 1.35rem/1.15 var(--font-serif); }
+.cart-line__meta {
   margin-top: 4px;
   font-size: .62rem; font-weight: 500;
   letter-spacing: .2em; text-transform: uppercase;
   color: var(--muted);
 }
-.line__controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 14px; }
-.line__total { align-self: start; font-size: 1rem; letter-spacing: .06em; }
+.cart-line__controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 14px; }
+.cart-line__total { align-self: start; font-size: 1rem; letter-spacing: .06em; }
 
 .qty { display: inline-flex; align-items: center; border: 1px solid rgba(43, 33, 24, .22); }
 .qty button {
@@ -2130,18 +1976,18 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
 .qty button:disabled { opacity: .35; cursor: default; }
 .qty output { min-width: 30px; text-align: center; font-size: .9rem; }
 
-.line__remove {
+.cart-line__remove {
   border-bottom: 1px solid currentColor;
   font-size: .62rem; font-weight: 500;
   letter-spacing: .2em; text-transform: uppercase;
   color: var(--muted);
   transition: color .3s ease;
 }
-.line__remove:hover { color: var(--text); }
+.cart-line__remove:hover { color: var(--text); }
 
 @media (max-width: 479px) {
-  .line { grid-template-columns: 76px minmax(0, 1fr); }
-  .line__total { grid-column: 2; }
+  .cart-line { grid-template-columns: 76px minmax(0, 1fr); }
+  .cart-line__total { grid-column: 2; }
 }
 
 .cart__summary { padding: clamp(24px, 3vw, 36px); background: var(--cream); }
@@ -2175,7 +2021,14 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   padding: clamp(28px, 5vw, 64px) 0;
   text-align: center;
 }
-.cart__empty .bottle { --bw: 96px; margin-bottom: 22px; }
+.cart__empty-photo {
+  width: 112px; height: auto;
+  aspect-ratio: 4 / 5;
+  margin-bottom: 22px;
+  object-fit: cover;
+  border-radius: 56px 56px 14px 14px;
+  background: var(--sand);
+}
 .cart__empty .section-title,
 .cart__done .section-title { text-indent: 0; }
 .cart__empty p,
@@ -2330,7 +2183,55 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
 .code-input input:focus { outline: none; border-color: var(--text); box-shadow: 0 0 0 3px rgba(201, 164, 106, .3); }
 .code-input.is-invalid input { border-color: #a1402f; }
 .auth__lead strong { color: var(--text); font-weight: 500; }
-[data-reset-form][hidden], [data-verify-form][hidden], [data-verify-switch][hidden] { display: none; }
+[data-password-step][hidden], [data-verify-form][hidden], [data-verify-switch][hidden], .steps[hidden], .notice[hidden] { display: none; }
+
+/* Sign-up / reset progress: 1 details → 2 verify email → 3 password */
+.steps {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 28px;
+  font-size: .6rem; font-weight: 500;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted);
+}
+.steps li { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.steps li + li::before {
+  content: "";
+  flex: none;
+  width: clamp(12px, 2.4vw, 26px); height: 1px;
+  margin-right: 2px;
+  background: rgba(43, 33, 24, .22);
+}
+.steps__num {
+  flex: none;
+  width: 24px; height: 24px;
+  display: grid; place-items: center;
+  border: 1px solid rgba(43, 33, 24, .25);
+  border-radius: 50%;
+  font-size: .7rem; letter-spacing: 0;
+  transition: background-color .3s ease, border-color .3s ease, color .3s ease;
+}
+.steps .is-current { color: var(--text); }
+.steps .is-current .steps__num { background: var(--ink); border-color: var(--ink); color: var(--ivory); }
+.steps .is-done .steps__num {
+  border-color: #5f7d4f;
+  background: #5f7d4f url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center / 12px no-repeat;
+  color: transparent;
+}
+
+/* Small screens: numbers for every step, the label only for the current one */
+@media (max-width: 559px) {
+  .steps li:not(.is-current) .steps__label { display: none; }
+}
+
+.notice {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid rgba(95, 125, 79, .3);
+  background: rgba(95, 125, 79, .1);
+  font-size: .9rem;
+  color: #3f5a33;
+}
+.notice svg { flex: none; width: 20px; height: 20px; }
 
 /* ---------- My account: security ---------- */
 

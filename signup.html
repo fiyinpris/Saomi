@@ -101,43 +101,25 @@
             <p class="auth__quote">“A signature that lingers long after you leave the room.”</p>
           </div>
           <div class="auth__panel" aria-label="Create an account">
+            <ol class="steps" aria-label="Progress">
+              <li class="is-current" aria-current="step" data-step="1"><span class="steps__num">1</span><span class="steps__label">Your details</span></li>
+              <li data-step="2"><span class="steps__num">2</span><span class="steps__label">Verify email</span></li>
+              <li data-step="3"><span class="steps__num">3</span><span class="steps__label">Create password</span></li>
+            </ol>
             <p class="kicker">Join the Maison</p>
             <h1 class="section-title" id="auth-title">Create Account</h1>
-            <p class="auth__lead">Save your details, check out faster and follow every order. We'll email you a code to confirm it's you.</p>
+            <p class="auth__lead">Enter your name and email address. We'll send you a 6-digit code to confirm it's really you, then you'll create your password.</p>
             <form class="form" novalidate data-auth-form="signup">
               <div class="field">
                 <label for="a-name">Full name</label>
                 <input id="a-name" name="name" type="text" autocomplete="name" maxlength="80" required>
               </div>
               <div class="field">
-                <label for="a-email">Email</label>
-                <input id="a-email" name="email" type="email" autocomplete="email" maxlength="254" required>
-              </div>
-              <div class="field">
-                <label for="a-password">Password</label>
-                <div class="field__password">
-                  <input id="a-password" name="password" type="password" autocomplete="new-password" maxlength="128" required aria-describedby="a-password-rules">
-                  <button type="button" class="field__toggle" aria-label="Show password" aria-pressed="false" data-toggle-password><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                </div>
-                <div class="meter" data-meter aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-                <ul class="rules" id="a-password-rules" data-rules>
-                  <li data-rule="length">At least 8 characters</li>
-                  <li data-rule="mix">A letter and a number</li>
-                  <li class="rules__strength" data-meter-label aria-live="polite"></li>
-                </ul>
-              </div>
-              <div class="field">
-                <label for="a-confirm">Confirm password</label>
-                <div class="field__password">
-                  <input id="a-confirm" name="confirm" type="password" autocomplete="new-password" maxlength="128" required aria-describedby="a-confirm-rule">
-                  <button type="button" class="field__toggle" aria-label="Show password" aria-pressed="false" data-toggle-password><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                </div>
-                <ul class="rules" id="a-confirm-rule">
-                  <li data-rule="match">Passwords match</li>
-                </ul>
+                <label for="a-email">Email address</label>
+                <input id="a-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="you@gmail.com" required>
               </div>
               <label class="check"><input type="checkbox" name="newsletter"><span>Email me with news and offers</span></label>
-              <button class="btn btn--dark btn--block" type="submit">Create account</button>
+              <button class="btn btn--dark btn--block" type="submit">Send verification code</button>
               <p class="form__status" role="status" data-form-status></p>
               <p class="form__legal">By continuing, you agree to our <a href="terms.html">Terms of service</a> and <a href="privacy.html">Privacy policy</a>.</p>
             </form>
