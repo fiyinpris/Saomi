@@ -258,9 +258,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
 }
 .is-scrolled .header,
 .has-solid-header .header {
-  background: rgba(251, 247, 240, .86);
-  -webkit-backdrop-filter: saturate(1.5) blur(16px);
-  backdrop-filter: saturate(1.5) blur(16px);
+  /* Solid rather than frosted: a blurred backdrop has to be recalculated on every scroll frame. */
+  background: rgba(251, 247, 240, .97);
   color: var(--text);
   box-shadow: 0 1px 0 var(--line);
 }
@@ -826,9 +825,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   width: 38px; height: 38px;
   display: grid; place-items: center;
   border-radius: 50%;
-  background: rgba(251, 247, 240, .8);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  background: rgba(251, 247, 240, .9);
   color: var(--ink);
   transition: background-color .3s ease;
 }
@@ -1353,8 +1350,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   position: absolute;
   width: 70%; aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(231, 207, 163, .42), transparent);
-  filter: blur(40px);
+  /* Soft gradient instead of a live blur filter, which was redrawn on every frame. */
+  background: radial-gradient(closest-side, rgba(231, 207, 163, .36), rgba(231, 207, 163, .14) 55%, transparent);
   animation: mist 18s ease-in-out infinite alternate;
 }
 .letter__mist::before { right: -22%; top: -40%; }
@@ -2367,6 +2364,14 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   transition: clip-path 1.6s var(--ease-io), scale 2.2s var(--ease-out);
 }
 .js [data-reveal="clip"].is-in > * { clip-path: inset(0 0 0 0); scale: 1; }
+
+/* Decorative loops pause while their section is off screen (set by js/main.js). */
+.is-offscreen,
+.is-offscreen *,
+.is-offscreen *::before,
+.is-offscreen *::after,
+.is-offscreen::before,
+.is-offscreen::after { animation-play-state: paused !important; }
 
 /* ---------- Reduced motion ---------- */
 

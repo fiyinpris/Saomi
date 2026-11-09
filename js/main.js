@@ -165,8 +165,11 @@
   let ticking = false;
 
   function onScroll() {
+    // Read every measurement first, then write styles, so the browser lays the page out
+    // once per frame instead of once per parallax image.
     const y = scrollY;
     const vh = innerHeight;
+    const rects = reduceMotion ? [] : parallaxEls.map((el) => el.parentElement.getBoundingClientRect());
 
     siteTop.classList.toggle('is-scrolled', y > 30);
     if (y > vh * 0.9 && y > lastY + 3 && !document.body.classList.contains('menu-open')) {
@@ -182,8 +185,8 @@
         heroContent.style.opacity = Math.max(0, 1 - y / (vh * 0.75)).toFixed(3);
         heroMedia.style.transform = `translate3d(0, ${(y * 0.2).toFixed(1)}px, 0) scale(${(1 + y * 0.00012).toFixed(4)})`;
       }
-      parallaxEls.forEach((el) => {
-        const r = el.parentElement.getBoundingClientRect();
+      parallaxEls.forEach((el, i) => {
+        const r = rects[i];
         if (r.bottom < 0 || r.top > vh) return;
         const p = (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2);
         el.style.translate = `0 ${(-p * (parseFloat(el.dataset.parallax) || 40)).toFixed(1)}px`;
@@ -197,6 +200,24 @@
   }, { passive: true });
   addEventListener('resize', onScroll);
   onScroll();
+
+  /* ---------- Decorative loops only run while their section is on screen ---------- */
+
+  // Sheen, glow, grain, marquee, mist, sparks and the seal keep the browser repainting even when
+  // nobody can see them; pausing them off screen leaves the work for scrolling.
+  if ('IntersectionObserver' in window && document.getAnimations) {
+    const pauseIO = new IntersectionObserver((entries) => {
+      entries.forEach((e) => e.target.classList.toggle('is-offscreen', !e.isIntersecting));
+    }, { rootMargin: '120px 0px' });
+    const watchLoops = () => document.getAnimations().forEach((a) => {
+      const target = a.effect && a.effect.target;
+      if (!target || a.effect.getTiming().iterations !== Infinity) return;
+      const zone = target.closest('section, .marquee, footer');
+      if (zone) pauseIO.observe(zone);
+    });
+    watchLoops();
+    loaded.then(watchLoops); // some loops only start once the intro has finished
+  }
 
   /* ---------- Scroll reveal ---------- */
 
@@ -281,32 +302,20 @@
   const bagCount = $('[data-bag-count]');
   let memoryBag = []; // used when storage is blocked
 
-  // The range, by slug, with each product's photograph (keep in step with CATALOG in server.py).
-  const PHOTOS = {
-    'soleil-dor': 'soleil-dor.jpg',
-    'velours-noir': 'velours-noir.jpg',
-    'rose-imperiale': 'rose-imperiale.jpg',
-    'verdant-obsession': 'verdant-obsession.jpg',
-    'lumiere-dopal': 'lumiere-dopal.jpg',
-    'santal-majeste': 'santal-majeste.jpg',
-    'aura-celeste': 'aura-celeste.webp',
-    'elixir-de-nuit': 'elixir-de-nuit.jpg',
-    'jasmin-eternel': 'jasmin-eternel.jpg',
-    'cuir-imperial': 'cuir-imperial.jpg',
-    'nectar-dor': 'nectar-dor.jpg',
-    'ombre-rose': 'ombre-rose.jpg',
-    'fleur-sauvage': 'fleur-sauvage.jpg',
-    'ocean-infini': 'ocean-infini.jpg',
-    'bois-de-cashmere': 'bois-de-cashmere.jpg',
-  };
-  const photoOf = (slug) => `assets/img/products/${PHOTOS[slug]}`;
+  // The range, by slug (keep in step with CATALOG in server.py). Each has a small 4:5 card photo.
+  const RANGE = new Set([
+    'soleil-dor', 'velours-noir', 'rose-imperiale', 'verdant-obsession', 'lumiere-dopal',
+    'santal-majeste', 'aura-celeste', 'elixir-de-nuit', 'jasmin-eternel', 'cuir-imperial',
+    'nectar-dor', 'ombre-rose', 'fleur-sauvage', 'ocean-infini', 'bois-de-cashmere',
+  ]);
+  const photoOf = (slug) => `assets/img/products/card/${slug}.jpg`;
 
   const bagStore = {
     read() {
       let items;
       try { items = JSON.parse(localStorage.getItem(BAG_KEY) || '[]'); } catch (e) { items = memoryBag; }
       // Anything no longer in the range (e.g. saved before the products changed) is dropped.
-      return Array.isArray(items) ? items.filter((i) => i && Object.prototype.hasOwnProperty.call(PHOTOS, i.slug)) : [];
+      return Array.isArray(items) ? items.filter((i) => i && RANGE.has(i.slug)) : [];
     },
     write(items) {
       memoryBag = items;
