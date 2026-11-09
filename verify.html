@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Enter Your Code — Saomi</title>
-  <meta name="description" content="Enter the 6-digit code we emailed you.">
+  <title>Confirm Your Email — Saomi</title>
+  <meta name="description" content="Confirm your email address to finish creating your Saomi account.">
   <meta name="theme-color" content="#231910">
-  <meta property="og:title" content="Enter Your Code — Saomi">
+  <meta property="og:title" content="Confirm Your Email — Saomi">
   <meta property="og:description" content="Amber, saffron and white musk, poured into glass.">
   <meta property="og:image" content="assets/img/hero-poster.jpg">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
@@ -100,30 +100,22 @@
             <img src="assets/img/feature.jpg" alt="" width="860" height="1080" loading="lazy">
             <p class="auth__quote">“A signature that lingers long after you leave the room.”</p>
           </div>
-          <div class="auth__panel" aria-label="Enter your code">
+          <div class="auth__panel" aria-label="Confirm your email" data-verify>
             <ol class="steps" aria-label="Progress" data-steps hidden>
               <li data-step="1"><span class="steps__num">1</span><span class="steps__label">Your details</span></li>
               <li class="is-current" aria-current="step" data-step="2"><span class="steps__num">2</span><span class="steps__label">Verify email</span></li>
               <li data-step="3"><span class="steps__num">3</span><span class="steps__label">Create password</span></li>
             </ol>
             <p class="kicker" data-verify-kicker>Check your inbox</p>
-            <h1 class="section-title" id="auth-title" data-verify-title>Enter Your Code</h1>
-            <p class="auth__lead" data-verify-lead>We sent a 6-digit code to your email. It expires in 10 minutes.</p>
+            <h1 class="section-title" id="auth-title" data-verify-title>Check Your Inbox</h1>
+            <p class="auth__lead" data-verify-lead>One moment…</p>
 
-            <form class="form" novalidate data-verify-form>
-              <fieldset class="code-input" data-code-input>
-                <legend class="sr-only">6-digit code</legend>
-                  <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 1 of 6" autocomplete="one-time-code">
-                  <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 2 of 6" autocomplete="off">
-                  <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 3 of 6" autocomplete="off">
-                  <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 4 of 6" autocomplete="off">
-                  <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 5 of 6" autocomplete="off">
-                  <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 6 of 6" autocomplete="off">
-              </fieldset>
-              <button class="btn btn--dark btn--block" type="submit">Verify</button>
+            <div class="waiting" data-waiting hidden>
+              <p class="waiting__status"><span class="waiting__dot" aria-hidden="true"></span>Waiting for you to open the link…</p>
+              <button class="btn btn--dark btn--block" type="button" data-check>I’ve confirmed my email</button>
               <p class="form__status" role="status" data-form-status></p>
-              <p class="form__legal">Didn't get it? Check your spam folder, or <button type="button" class="text-btn" data-resend>send a new code</button><span data-resend-timer></span>.</p>
-            </form>
+              <p class="form__legal">Didn’t get it? Check your spam folder, or <button type="button" class="text-btn" data-resend>send a new link</button><span data-resend-timer></span>.</p>
+            </div>
 
             <form class="form" novalidate data-password-step hidden>
               <p class="notice notice--success" role="status" data-verified-notice><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16 9.8"/></svg><span>Email confirmed.</span></p>
@@ -154,7 +146,7 @@
               <p class="form__status" role="status" data-form-status></p>
             </form>
 
-            <p class="auth__switch" data-verify-switch><a href="login.html" data-verify-back>Use a different email</a></p>
+            <p class="auth__switch" data-verify-switch><a href="signup.html" data-verify-back>Use a different email</a></p>
           </div>
         </div>
       </div>

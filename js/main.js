@@ -568,26 +568,20 @@
     });
   }
 
-  /* ---------- Accounts, orders and messages (served by server.py) ---------- */
+  /* ---------- Accounts, orders and messages (Firebase: js/backend.js) ---------- */
 
-  const LOCAL = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
-  const OFFLINE = LOCAL
-    ? 'We couldn’t reach the Saomi server. Start it with “python server.py” and try again.'
-    : 'Sign-in and accounts aren’t available right now. Please try again later.';
+  // The Firebase code loads on first use, so pages without forms stay light.
+  let backendModule;
+  const UNAVAILABLE = 'Sign-in and accounts aren’t available right now. Please try again later.';
 
   async function api(path, body) {
-    const init = body === undefined
-      ? { credentials: 'same-origin', headers: { Accept: 'application/json' } }
-      : { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) };
-    let res;
-    try { res = await fetch(path, init); } catch (e) { throw Object.assign(new Error(OFFLINE), { status: 0 }); }
-    let data = null;
-    try { data = await res.json(); } catch (e) { /* not JSON: a static host without the API */ }
-    // A host without the account server (e.g. a static deploy) answers with its own error
-    // object, which used to show as "[object Object]".
-    if (!data || (!res.ok && typeof data.error !== 'string')) throw Object.assign(new Error(OFFLINE), { status: res.status });
-    if (!res.ok) throw Object.assign(new Error(data.error || 'Something went wrong. Please try again.'), { status: res.status, field: data.field, retry: data.resendIn });
-    return data;
+    backendModule = backendModule || import('./backend.js');
+    let backend;
+    try { backend = await backendModule; } catch (e) {
+      backendModule = null;
+      throw Object.assign(new Error(UNAVAILABLE), { status: 0 });
+    }
+    return backend.call(path, body);
   }
 
   const session = api('/api/me').then((d) => d.user).catch(() => null);
@@ -705,7 +699,7 @@
     return next ? `?next=${encodeURIComponent(next)}` : '';
   };
 
-  /* Sign in / create account: both continue on the code page */
+  /* Sign in (straight to the account) / create account (continues on the confirm-email page) */
 
   const authForm = $('[data-auth-form]');
   if (authForm) {
@@ -730,12 +724,17 @@
         ...(signup ? [] : [['password', !data.password, 'Please enter your password.']]),
       ]);
       if (!ok) return;
-      busy(submit, true, signup ? 'Sending code…' : 'Checking…');
+      busy(submit, true, signup ? 'Sending link…' : 'Signing in…');
       setStatus(status, '', null);
       try {
         await api(signup ? '/api/signup' : '/api/login', data);
-        setStatus(status, 'Code sent. Check your inbox.', 'success');
-        location.assign(`verify.html${keepNext()}`);
+        if (signup) {
+          setStatus(status, 'Link sent. Check your inbox.', 'success');
+          location.assign(`verify.html${keepNext()}`);
+        } else {
+          setStatus(status, 'Welcome back.', 'success');
+          location.assign(nextPage('account.html'));
+        }
       } catch (err) {
         busy(submit, false, label);
         setStatus(status, err.message, 'error');
@@ -759,59 +758,62 @@
       setStatus(status, '', null);
       try {
         await api('/api/forgot', { email });
-        location.assign('verify.html');
+        busy(submit, false, 'Send another link');
+        setStatus(status, `If there’s an account for ${email}, a link to choose a new password is on its way. It works for 1 hour; check your spam folder too.`, 'success');
       } catch (err) {
-        busy(submit, false, 'Send code');
+        busy(submit, false, 'Send link');
         setStatus(status, err.message, 'error');
       }
     });
   }
 
-  /* Code page: enter the emailed code, then (for sign-up or reset) create a password */
+  /* Confirm-email page. After sign-up it waits for the emailed link to be opened (checking by
+     itself), then asks for a password. It also handles Firebase links that point here directly:
+     ?mode=verifyEmail&oobCode=… and ?mode=resetPassword&oobCode=… */
 
-  const verifyForm = $('[data-verify-form]');
-  if (verifyForm) {
+  const verifyPanel = $('[data-verify]');
+  if (verifyPanel) {
+    const waiting = $('[data-waiting]');
+    const waitStatus = $('[data-form-status]', waiting);
+    const checkBtn = $('[data-check]', waiting);
+    const resendBtn = $('[data-resend]', waiting);
+    const timer = $('[data-resend-timer]', waiting);
     const passwordStep = $('[data-password-step]');
-    const status = $('[data-form-status]', verifyForm);
-    const submit = $('button[type="submit"]', verifyForm);
-    const group = $('[data-code-input]', verifyForm);
-    const boxes = $$('input', group);
-    const resendBtn = $('[data-resend]', verifyForm);
-    const timer = $('[data-resend-timer]', verifyForm);
     const steps = $('[data-steps]');
     const kicker = $('[data-verify-kicker]');
     const title = $('[data-verify-title]');
     const lead = $('[data-verify-lead]');
+    const switchRow = $('[data-verify-switch]');
     const back = $('[data-verify-back]');
+    const params = new URLSearchParams(location.search);
+    const mode = params.get('mode');
+    const oobCode = params.get('oobCode');
     const COPY = {
       signup: {
-        kicker: 'Confirm your email', why: 'to confirm your email address', back: 'signup.html',
         steps: ['Your details', 'Verify email', 'Create password'],
-        passwordKicker: 'Almost done', passwordTitle: 'Create Your Password',
+        passwordKicker: 'Email confirmed', passwordTitle: 'Create Your Password',
         passwordLead: 'Your email address is confirmed. Create a password to finish setting up your account.',
         passwordLabel: 'Create password', passwordButton: 'Create account',
         done: (name) => `Your account is ready. Welcome to Saomi, ${name}.`,
       },
       reset: {
-        kicker: 'Reset your password', why: 'to reset your password', back: 'forgot.html',
-        steps: ['Your email', 'Verify email', 'New password'],
+        steps: ['Your email', 'Open the link', 'New password'],
         passwordKicker: 'Almost done', passwordTitle: 'Choose a New Password',
         passwordLead: 'Pick a password you haven’t used here before. You’ll be signed out on your other devices.',
         passwordLabel: 'New password', passwordButton: 'Save new password',
         done: () => 'Password updated. Signing you in…',
       },
-      login: { kicker: 'Two-step sign in', why: 'to finish signing in', back: 'login.html' },
     };
-    let purpose = 'login';
+    let purpose = 'signup';
+    let resetCode = '';
     let tick;
+    let poll;
 
-    const code = () => boxes.map((b) => b.value).join('');
+    const say = (k, t, l) => { kicker.textContent = k; title.textContent = t; lead.textContent = l; };
 
-    // Progress dots for sign-up and reset; sign-in doesn't show them.
     function showSteps(current) {
       const labels = COPY[purpose].steps;
-      steps.hidden = !labels;
-      if (!labels) return;
+      steps.hidden = false;
       $$('li', steps).forEach((li, i) => {
         $('.steps__label', li).textContent = labels[i];
         li.classList.toggle('is-done', i + 1 < current);
@@ -820,6 +822,27 @@
         else li.removeAttribute('aria-current');
       });
     }
+
+    function stopWaiting() {
+      clearInterval(poll);
+      clearInterval(tick);
+      waiting.hidden = true;
+    }
+
+    // A finished or dead end: a heading, a sentence and one link onward.
+    function endWith(k, t, l, linkText, href) {
+      stopWaiting();
+      steps.hidden = true;
+      passwordStep.hidden = true;
+      say(k, t, l);
+      back.textContent = linkText;
+      back.href = href;
+      switchRow.hidden = false;
+    }
+
+    const expired = (message) => endWith('Link expired', 'Start Again',
+      message || 'This sign-up has expired. Please start again to get a new link.',
+      'Back to create account', `signup.html${keepNext()}`);
 
     function startTimer(seconds) {
       let left = Math.max(0, Number(seconds) || 0);
@@ -836,132 +859,88 @@
       }, 1000);
     }
 
-    function expired(message) {
-      clearInterval(tick);
-      steps.hidden = true;
-      kicker.textContent = 'Code expired';
-      title.textContent = 'Start Again';
-      lead.textContent = message || 'This code has expired. Please start again to get a new one.';
-      verifyForm.hidden = true;
-      passwordStep.hidden = true;
-      $('[data-verify-switch]').hidden = false;
-      back.textContent = purpose === 'signup' ? 'Back to create account' : 'Back to sign in';
-      back.href = (purpose === 'signup' ? 'signup.html' : 'login.html') + keepNext();
-    }
-
     function showPasswordStep() {
       const copy = COPY[purpose];
-      clearInterval(tick);
-      verifyForm.hidden = true;
+      stopWaiting();
+      switchRow.hidden = true;
       passwordStep.hidden = false;
-      $('[data-verify-switch]').hidden = true;
-      kicker.textContent = copy.passwordKicker;
-      title.textContent = copy.passwordTitle;
-      lead.textContent = copy.passwordLead;
+      say(copy.passwordKicker, copy.passwordTitle, copy.passwordLead);
       $('[data-password-label]', passwordStep).textContent = copy.passwordLabel;
       $('[data-password-submit]', passwordStep).textContent = copy.passwordButton;
       showSteps(3);
       passwordStep.elements.password.focus();
     }
 
-    function clearCode() {
-      boxes.forEach((b) => { b.value = ''; });
-      boxes[0].focus();
-    }
-
-    function fill(digits, from) {
-      digits.slice(0, boxes.length - from).split('').forEach((d, k) => { boxes[from + k].value = d; });
-      boxes[Math.min(from + digits.length, boxes.length) - 1].focus();
-      if (code().length === boxes.length) verifyForm.requestSubmit();
-    }
-
-    // Six boxes that type, delete, move and paste like a single field.
-    boxes.forEach((box, i) => {
-      box.addEventListener('input', () => {
-        const digits = box.value.replace(/\D/g, '');
-        group.classList.remove('is-invalid');
-        if (digits.length > 1) { fill(digits, i); return; } // autofill or a pasted code
-        box.value = digits;
-        if (digits && i < boxes.length - 1) boxes[i + 1].focus();
-        if (code().length === boxes.length) verifyForm.requestSubmit();
-      });
-      box.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && !box.value && i > 0) {
-          e.preventDefault();
-          boxes[i - 1].value = '';
-          boxes[i - 1].focus();
-        } else if (e.key === 'ArrowLeft' && i > 0) {
-          boxes[i - 1].focus();
-        } else if (e.key === 'ArrowRight' && i < boxes.length - 1) {
-          boxes[i + 1].focus();
-        }
-      });
-      box.addEventListener('paste', (e) => {
-        const digits = (e.clipboardData.getData('text') || '').replace(/\D/g, '');
-        if (!digits) return;
-        e.preventDefault();
-        fill(digits, i);
-      });
-      box.addEventListener('focus', () => box.select());
-    });
-
-    api('/api/challenge').then((ch) => {
-      purpose = COPY[ch.purpose] ? ch.purpose : 'login';
-      const copy = COPY[purpose];
-      kicker.textContent = copy.kicker;
-      back.href = copy.back + keepNext();
-      if (ch.verified && copy.steps) { showPasswordStep(); return; } // came back after confirming
-      showSteps(2);
-      lead.textContent = '';
-      const strong = document.createElement('strong');
-      strong.textContent = ch.email;
-      lead.append('We sent a 6-digit code to ', strong, ` ${copy.why}. It expires in 10 minutes.`);
-      startTimer(ch.resendIn);
-      boxes[0].focus();
-    }).catch((err) => expired(err.status === 404 ? '' : err.message));
-
-    verifyForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (submit.disabled) return;
-      const value = code();
-      if (!/^\d{6}$/.test(value)) {
-        group.classList.add('is-invalid');
-        setStatus(status, 'Enter all 6 digits of your code.', 'error');
-        (boxes.find((b) => !b.value) || boxes[0]).focus();
-        return;
-      }
-      busy(submit, true, 'Checking…');
-      setStatus(status, '', null);
+    // Has the link been opened (here, in another tab, or on another device)?
+    async function check(manual) {
       try {
-        const res = await api('/api/verify', { code: value });
-        if (res.next === 'password') {
-          busy(submit, false, 'Verify');
-          purpose = res.purpose;
-          showPasswordStep();
-          return;
-        }
-        setStatus(status, `Welcome back, ${res.user.name}.`, 'success');
-        location.assign(nextPage('account.html'));
+        const { verified } = await api('/api/check');
+        if (verified) { showPasswordStep(); return; }
+        if (manual) setStatus(waitStatus, 'Not confirmed yet. Open the link in the email we sent, then try again.', 'error');
       } catch (err) {
-        busy(submit, false, 'Verify');
-        if (err.status === 410) { expired(err.message); return; }
-        group.classList.add('is-invalid');
-        setStatus(status, err.message, 'error');
-        clearCode();
+        if (err.status === 410) expired(err.message);
+        else if (manual) setStatus(waitStatus, err.message, 'error');
       }
+    }
+
+    function wait(email, resendIn) {
+      showSteps(2);
+      say('Confirm your email', 'Check Your Inbox', '');
+      const strong = document.createElement('strong');
+      strong.textContent = email;
+      lead.append('We sent a link to ', strong, '. Open it to confirm your email address, then come back here. This page moves on by itself.');
+      waiting.hidden = false;
+      back.textContent = 'Use a different email';
+      back.href = `signup.html${keepNext()}`;
+      startTimer(resendIn);
+      poll = setInterval(() => { if (!document.hidden) check(false); }, 4000);
+      document.addEventListener('visibilitychange', () => { if (!document.hidden && !waiting.hidden) check(false); });
+    }
+
+    const dropCode = () => history.replaceState(null, '', `verify.html${keepNext()}`); // keep the one-time code out of history
+
+    if (mode === 'verifyEmail' && oobCode) {
+      say('One moment', 'Confirming…', 'Confirming your email address.');
+      api('/api/apply-code', { code: oobCode }).then(({ continue: carryOn }) => {
+        dropCode();
+        if (carryOn) { purpose = 'signup'; showPasswordStep(); return; }
+        endWith('Email confirmed', 'You’re Nearly There',
+          'Your email address is confirmed. Go back to the page where you started to create your password. If you’ve closed it, use “Forgot password” to set one.',
+          'Set a password', 'forgot.html');
+      }).catch((err) => { dropCode(); expired(err.message); });
+    } else if (mode === 'resetPassword' && oobCode) {
+      purpose = 'reset';
+      api('/api/reset-check', { code: oobCode }).then(() => {
+        resetCode = oobCode;
+        dropCode();
+        showPasswordStep();
+      }).catch((err) => {
+        dropCode();
+        endWith('Link expired', 'Request a New Link', err.message, 'Reset your password', 'forgot.html');
+      });
+    } else {
+      api('/api/challenge').then((ch) => {
+        if (ch.verified) { showPasswordStep(); return; } // came back after confirming
+        wait(ch.email, ch.resendIn);
+      }).catch((err) => expired(err.status === 410 ? '' : err.message));
+    }
+
+    checkBtn.addEventListener('click', async () => {
+      busy(checkBtn, true, 'Checking…');
+      setStatus(waitStatus, '', null);
+      await check(true);
+      busy(checkBtn, false, 'I’ve confirmed my email');
     });
 
     resendBtn.addEventListener('click', async () => {
       resendBtn.disabled = true;
       try {
         const res = await api('/api/resend', {});
-        group.classList.remove('is-invalid');
-        setStatus(status, 'A new code is on its way. Codes sent earlier no longer work.', 'success');
+        setStatus(waitStatus, 'A new link is on its way. Check your inbox and spam folder.', 'success');
         startTimer(res.resendIn);
-        clearCode();
       } catch (err) {
         if (err.status === 410) { expired(err.message); return; }
-        setStatus(status, err.message, 'error');
+        setStatus(waitStatus, err.message, 'error');
         startTimer(err.retry);
       }
     });
@@ -974,16 +953,23 @@
       e.preventDefault();
       if (!validate(passwordStep, passwordStatus, passwordChecks())) return;
       const label = passwordSubmit.textContent;
+      const password = passwordStep.elements.password.value;
       busy(passwordSubmit, true, 'Saving…');
       setStatus(passwordStatus, '', null);
       try {
-        const res = await api('/api/set-password', { password: passwordStep.elements.password.value });
+        const res = purpose === 'reset'
+          ? await api('/api/reset-password', { code: resetCode, password })
+          : await api('/api/set-password', { password });
         $('[data-verified-notice]', passwordStep).hidden = true;
         setStatus(passwordStatus, COPY[purpose].done(res.user.name), 'success');
         setTimeout(() => location.assign(nextPage('account.html')), 1200);
       } catch (err) {
         busy(passwordSubmit, false, label);
-        if (err.status === 410) { expired(err.message); return; }
+        if (err.status === 410) {
+          if (purpose === 'reset') endWith('Link expired', 'Request a New Link', err.message, 'Reset your password', 'forgot.html');
+          else expired(err.message);
+          return;
+        }
         setStatus(passwordStatus, err.message, 'error');
         if (err.field) markField(passwordStep, err.field, true);
       }
@@ -1050,8 +1036,7 @@
                 </div>
               </form>
               <div class="security__devices">
-                <p>Don’t recognise a sign-in? Sign out of Saomi on every device, including this one.</p>
-                <button class="btn" type="button" data-logout-all>Sign out everywhere</button>
+                <p>Don’t recognise a sign-in? Change your password above: that signs you out of Saomi on every other device.</p>
               </div>
             </section>
           </div>
@@ -1062,14 +1047,8 @@
 
       $('[data-logout]', box).addEventListener('click', async (e) => {
         busy(e.currentTarget, true, 'Signing out…');
-        try { await api('/api/logout', {}); } catch (err) { /* the cookie expires on its own */ }
+        try { await api('/api/logout', {}); } catch (err) { /* already signed out */ }
         location.assign('index.html');
-      });
-
-      $('[data-logout-all]', box).addEventListener('click', async (e) => {
-        busy(e.currentTarget, true, 'Signing out…');
-        try { await api('/api/logout-all', {}); } catch (err) { /* the cookie expires on its own */ }
-        location.assign('login.html');
       });
 
       const passwordForm = $('[data-password-form]', box);
@@ -1090,7 +1069,7 @@
         try {
           await api('/api/password', { current: f.current.value, password: f.password.value });
           passwordForm.reset();
-          setStatus(passwordStatus, 'Password updated. Your other devices have been signed out.', 'success');
+          setStatus(passwordStatus, 'Password updated. Your other devices will be signed out.', 'success');
         } catch (err) {
           if (err.status === 401) { location.assign('login.html?next=account.html'); return; }
           setStatus(passwordStatus, err.message, 'error');
