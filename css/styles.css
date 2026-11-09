@@ -414,7 +414,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: 43% 40%;
+  object-position: 60% 40%; /* phones and tablets: keeps her face and the bottle in frame */
   opacity: 0;
   transition: opacity 1.2s linear;
 }
@@ -774,8 +774,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   display: flex; flex-direction: column;
 }
 .product[hidden] { display: none; }
-/* Cards fade in place rather than sliding, so the grid stays put while it appears. */
-.js .product[data-reveal] { transform: none; }
+/* Product cards are simply there: no slide, no fade, no staggered pop-in while scrolling. */
+.js .product[data-reveal] { opacity: 1; transform: none; transition: none; }
 .product.is-entering { animation: card-in .6s var(--ease-out) both; animation-delay: calc(var(--n, 0) * 60ms); }
 @keyframes card-in { from { opacity: 0; } }
 
@@ -798,17 +798,12 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   background: color-mix(in oklab, var(--liquid), #fbf7f0 70%);
 }
 
-/* Every bottle sits in the middle of its photo, so a centred crop keeps it whole. */
+/* Card photos are already cut to 4:5. They hold still: no zoom on hover. */
 .product__photo {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
   object-position: 50% 50%;
-  transition: transform 1.2s var(--ease-out);
-}
-
-@media (hover: hover) {
-  .product:hover .product__photo { transform: scale(1.05); }
 }
 
 .badge {
@@ -998,9 +993,10 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  transition: transform 1.2s var(--ease-out);
 }
-.family-card:hover .family-card__photo { transform: scale(1.05); }
+/* Family cards fade in where they are rather than sliding up. */
+.js .families__grid > li[data-reveal],
+.js .family-row[data-reveal] { transform: none; }
 .family-card__media::after {
   content: "";
   position: absolute; inset: 0;
@@ -1083,7 +1079,8 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   position: relative;
   aspect-ratio: 4 / 5;
 }
-.spotlight__media img {
+.spotlight__media img,
+.spotlight__media video {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
@@ -1125,6 +1122,10 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
   display: grid; gap: 10px;
   padding: 10px;
 }
+/* Over the moving film there are no fixed points to aim at, so the notes sit at the edges
+   without hotspot dots or connector lines. */
+.spotlight__stage--film .callout__title::before,
+.spotlight__stage--film .callout__title::after { display: none; }
 .callout {
   position: relative;
   display: grid; grid-template-columns: 28px 1fr; column-gap: 14px;

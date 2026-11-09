@@ -4,7 +4,6 @@
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   /* ---------- Hero video: seamless crossfade loop ---------- */
@@ -232,24 +231,20 @@
   }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
   $$('[data-reveal]').forEach((el) => revealIO.observe(el));
 
-  /* ---------- Card tilt + glare ---------- */
+  /* ---------- Films outside the hero: load when near, play only while on screen ---------- */
 
-  if (finePointer && !reduceMotion) {
-    $$('[data-tilt]').forEach((card) => {
-      card.addEventListener('pointermove', (e) => {
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - 0.5;
-        const y = (e.clientY - r.top) / r.height - 0.5;
-        card.style.setProperty('--rx', `${(-y * 6).toFixed(2)}deg`);
-        card.style.setProperty('--ry', `${(x * 8).toFixed(2)}deg`);
-        card.style.setProperty('--mx', `${((x + 0.5) * 100).toFixed(1)}%`);
-        card.style.setProperty('--my', `${((y + 0.5) * 100).toFixed(1)}%`);
+  const films = $$('video[data-film]');
+  if (films.length && 'IntersectionObserver' in window) {
+    const filmIO = new IntersectionObserver((entries) => {
+      entries.forEach(({ target: film, isIntersecting }) => {
+        if (!isIntersecting) { film.pause(); return; }
+        if (!film.getAttribute('src') && film.dataset.src) film.src = film.dataset.src;
+        if (reduceMotion) return; // the poster stays put
+        const p = film.play();
+        if (p && p.catch) p.catch(() => { /* autoplay refused: the poster stays */ });
       });
-      card.addEventListener('pointerleave', () => {
-        card.style.setProperty('--rx', '0deg');
-        card.style.setProperty('--ry', '0deg');
-      });
-    });
+    }, { rootMargin: '200px 0px' });
+    films.forEach((film) => filmIO.observe(film));
   }
 
   /* ---------- Mobile drawer ---------- */
@@ -575,7 +570,10 @@
 
   /* ---------- Accounts, orders and messages (served by server.py) ---------- */
 
-  const OFFLINE = 'We couldn’t reach the Saomi server. Start it with “python server.py” and try again.';
+  const LOCAL = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
+  const OFFLINE = LOCAL
+    ? 'We couldn’t reach the Saomi server. Start it with “python server.py” and try again.'
+    : 'Sign-in and accounts aren’t available right now. Please try again later.';
 
   async function api(path, body) {
     const init = body === undefined
@@ -585,7 +583,9 @@
     try { res = await fetch(path, init); } catch (e) { throw Object.assign(new Error(OFFLINE), { status: 0 }); }
     let data = null;
     try { data = await res.json(); } catch (e) { /* not JSON: a static host without the API */ }
-    if (!data) throw Object.assign(new Error(OFFLINE), { status: res.status });
+    // A host without the account server (e.g. a static deploy) answers with its own error
+    // object, which used to show as "[object Object]".
+    if (!data || (!res.ok && typeof data.error !== 'string')) throw Object.assign(new Error(OFFLINE), { status: res.status });
     if (!res.ok) throw Object.assign(new Error(data.error || 'Something went wrong. Please try again.'), { status: res.status, field: data.field, retry: data.resendIn });
     return data;
   }
