@@ -593,7 +593,6 @@
   });
 
   const money = (n) => `$${Number(n).toLocaleString('en-US')}`;
-  const EYE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>';
   const esc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   // Only same-site page names are accepted as a post-login destination.
@@ -793,14 +792,14 @@
         steps: ['Your details', 'Verify email', 'Create password'],
         passwordKicker: 'Email confirmed', passwordTitle: 'Create Your Password',
         passwordLead: 'Your email address is confirmed. Create a password to finish setting up your account.',
-        passwordLabel: 'Create password', passwordButton: 'Create account',
+        passwordLabel: 'Create password', passwordButton: 'Create account', notice: 'Email confirmed.',
         done: (name) => `Your account is ready. Welcome to Saomi, ${name}.`,
       },
       reset: {
         steps: ['Your email', 'Open the link', 'New password'],
         passwordKicker: 'Almost done', passwordTitle: 'Choose a New Password',
         passwordLead: 'Pick a password you haven’t used here before. You’ll be signed out on your other devices.',
-        passwordLabel: 'New password', passwordButton: 'Save new password',
+        passwordLabel: 'New password', passwordButton: 'Save new password', notice: '',
         done: () => 'Password updated. Signing you in…',
       },
     };
@@ -867,6 +866,9 @@
       say(copy.passwordKicker, copy.passwordTitle, copy.passwordLead);
       $('[data-password-label]', passwordStep).textContent = copy.passwordLabel;
       $('[data-password-submit]', passwordStep).textContent = copy.passwordButton;
+      const notice = $('[data-verified-notice]', passwordStep); // "Email confirmed." is for sign-up only
+      notice.hidden = !copy.notice;
+      if (copy.notice) $('span', notice).textContent = copy.notice;
       showSteps(3);
       passwordStep.elements.password.focus();
     }
@@ -997,48 +999,6 @@
             <p class="kicker">Your orders</p>
             <h2 class="section-title">Order History</h2>
             <div data-orders><p class="cart__loading">Loading your orders…</p></div>
-
-            <section class="security" aria-labelledby="security-title">
-              <p class="kicker">Security</p>
-              <h2 class="section-title" id="security-title">Change Password</h2>
-              <form class="form" novalidate data-password-form>
-                <div class="field">
-                  <label for="p-current">Current password</label>
-                  <div class="field__password">
-                    <input id="p-current" name="current" type="password" autocomplete="current-password" maxlength="128" required>
-                    <button type="button" class="field__toggle" aria-label="Show password" aria-pressed="false" data-toggle-password>${EYE}</button>
-                  </div>
-                </div>
-                <div class="field">
-                  <label for="p-password">New password</label>
-                  <div class="field__password">
-                    <input id="p-password" name="password" type="password" autocomplete="new-password" maxlength="128" required aria-describedby="p-password-rules">
-                    <button type="button" class="field__toggle" aria-label="Show password" aria-pressed="false" data-toggle-password>${EYE}</button>
-                  </div>
-                  <div class="meter" data-meter aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-                  <ul class="rules" id="p-password-rules">
-                    <li data-rule="length">At least 8 characters</li>
-                    <li data-rule="mix">A letter and a number</li>
-                    <li class="rules__strength" data-meter-label aria-live="polite"></li>
-                  </ul>
-                </div>
-                <div class="field">
-                  <label for="p-confirm">Confirm new password</label>
-                  <div class="field__password">
-                    <input id="p-confirm" name="confirm" type="password" autocomplete="new-password" maxlength="128" required aria-describedby="p-confirm-rule">
-                    <button type="button" class="field__toggle" aria-label="Show password" aria-pressed="false" data-toggle-password>${EYE}</button>
-                  </div>
-                  <ul class="rules" id="p-confirm-rule"><li data-rule="match">Passwords match</li></ul>
-                </div>
-                <div class="form__actions">
-                  <button class="btn btn--dark" type="submit">Update password</button>
-                  <p class="form__status" role="status" data-form-status></p>
-                </div>
-              </form>
-              <div class="security__devices">
-                <p>Don’t recognise a sign-in? Change your password above: that signs you out of Saomi on every other device.</p>
-              </div>
-            </section>
           </div>
         </div>`;
       $('.profile__avatar', box).textContent = user.name.trim().charAt(0).toUpperCase();
@@ -1049,34 +1009,6 @@
         busy(e.currentTarget, true, 'Signing out…');
         try { await api('/api/logout', {}); } catch (err) { /* already signed out */ }
         location.assign('index.html');
-      });
-
-      const passwordForm = $('[data-password-form]', box);
-      const passwordStatus = $('[data-form-status]', passwordForm);
-      const passwordSubmit = $('button[type="submit"]', passwordForm);
-      const passwordChecks = watchNewPassword(passwordForm);
-      clearOnInput(passwordForm);
-      passwordForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const f = passwordForm.elements;
-        const ok = validate(passwordForm, passwordStatus, [
-          ['current', !f.current.value, 'Please enter your current password.'],
-          ...passwordChecks(),
-        ]);
-        if (!ok) return;
-        busy(passwordSubmit, true, 'Updating…');
-        setStatus(passwordStatus, '', null);
-        try {
-          await api('/api/password', { current: f.current.value, password: f.password.value });
-          passwordForm.reset();
-          setStatus(passwordStatus, 'Password updated. Your other devices will be signed out.', 'success');
-        } catch (err) {
-          if (err.status === 401) { location.assign('login.html?next=account.html'); return; }
-          setStatus(passwordStatus, err.message, 'error');
-          if (err.field) markField(passwordForm, err.field, true);
-        } finally {
-          busy(passwordSubmit, false, 'Update password');
-        }
       });
 
       const list = $('[data-orders]', box);

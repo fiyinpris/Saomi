@@ -2249,25 +2249,6 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round
 }
 .notice svg { flex: none; width: 20px; height: 20px; }
 
-/* ---------- My account: security ---------- */
-
-.security {
-  margin-top: clamp(48px, 6vw, 72px);
-  padding-top: clamp(36px, 4vw, 48px);
-  border-top: 1px solid var(--line);
-}
-.security .section-title { margin-bottom: 26px; text-indent: 0; }
-.security .form { max-width: 520px; }
-.security__devices {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-  gap: 14px 24px;
-  max-width: 520px;
-  margin-top: 36px;
-  padding: 22px 24px;
-  background: var(--cream);
-}
-.security__devices p { flex: 1 1 220px; font-size: .92rem; color: var(--muted); }
-
 /* ---------- Terms and privacy ---------- */
 
 .legal__wrap { max-width: 780px; }

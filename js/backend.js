@@ -313,24 +313,6 @@ const handlers = {
     return { purpose: 'reset', user: publicUser(user) };
   },
 
-  // Change password from My account. Firebase signs out other devices when it changes.
-  async password(body) {
-    const user = await signedIn();
-    if (!body.current) throw fail(400, 'Please enter your current password.', { field: 'current' });
-    checkPassword(body.password, user.email, user.displayName || '');
-    if (body.current === body.password) throw fail(400, 'Choose a password that’s different from your current one.', { field: 'password' });
-    try {
-      await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, body.current));
-    } catch (err) {
-      if (['auth/invalid-credential', 'auth/invalid-login-credentials', 'auth/wrong-password'].includes(err.code)) {
-        throw fail(400, 'Your current password isn’t right.', { field: 'current' });
-      }
-      throw err;
-    }
-    await updatePassword(user, body.password);
-    return { ok: true };
-  },
-
   async logout() {
     clearPending();
     await signOut(auth);
